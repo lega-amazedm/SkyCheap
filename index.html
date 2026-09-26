@@ -3,44 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#0a0e1a">
 <meta name="description" content="НебоДешево — поиск дешёвых авиабилетов по всему миру">
 <title>НебоДешево — дешёвые авиабилеты</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<!-- ====== DRIVE (EMRld) — установлен по инструкции ====== -->
+<script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1" data-cmp-ab="2">
+  (function () {
+      var script = document.createElement("script");
+      script.async = 1;
+      script.setAttribute("data-cmp-ab","2");
+      script.src = 'https://emrld.ltd/NTc4MTA1.js?t=578105';
+      document.head.appendChild(script);
+  })();
+</script>
+<!-- ===================================================== -->
 
 <style>
   :root{
-    --bg:#f6f8fc;
-    --bg-2:#eef2f9;
-    --white:#ffffff;
-    --ink:#0d1526;
-    --ink-2:#3c4a63;
-    --muted:#8a94a8;
-    --line:#e6ebf3;
-    --line-2:#dfe6f0;
-    --brand:#3b6cff;
-    --brand-2:#7b5cff;
-    --brand-3:#18b5d6;
-    --success:#12b76a;
-    --warn:#f79009;
-    --shadow-sm:0 1px 2px rgba(16,24,40,.04);
-    --shadow-md:0 8px 24px -8px rgba(16,24,40,.10), 0 2px 6px rgba(16,24,40,.04);
-    --shadow-lg:0 30px 60px -20px rgba(59,108,255,.18), 0 12px 30px -10px rgba(16,24,40,.08);
-    --r-xl:28px;
-    --r-lg:20px;
-    --r-md:14px;
-    --r-sm:10px;
+    --bg:#0a0e1a;
+    --bg-2:#0f1424;
+    --surface:#141a2e;
+    --surface-2:#1a2138;
+    --surface-hover:#1f2742;
+    --line:rgba(255,255,255,.08);
+    --line-2:rgba(255,255,255,.12);
+    --text:#eef2fb;
+    --text-2:#b4bdd1;
+    --muted:#6b7689;
+    --brand:#4d7cff;
+    --brand-2:#8b5cff;
+    --brand-3:#22d3ee;
+    --success:#22c55e;
+    --warn:#f59e0b;
+    --danger:#ef4444;
   }
 
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html{scroll-behavior:smooth}
+
   body{
-    font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
     background:var(--bg);
-    color:var(--ink);
+    color:var(--text);
     line-height:1.55;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
@@ -49,149 +58,162 @@
     position:relative;
   }
 
-  /* фон — мягкие градиентные пятна */
-  body::before,body::after{
-    content:'';
+  .bg-decor{
     position:fixed;
-    border-radius:50%;
-    filter:blur(120px);
+    inset:0;
     pointer-events:none;
     z-index:0;
+    overflow:hidden;
   }
-  body::before{
-    width:640px;height:640px;
-    background:radial-gradient(circle,rgba(123,92,255,.20),transparent 65%);
-    top:-260px;left:-220px;
+  .bg-decor::before,
+  .bg-decor::after{
+    content:'';
+    position:absolute;
+    border-radius:50%;
+    filter:blur(140px);
   }
-  body::after{
-    width:600px;height:600px;
-    background:radial-gradient(circle,rgba(59,108,255,.18),transparent 65%);
-    top:200px;right:-260px;
+  .bg-decor::before{
+    width:720px;height:720px;
+    background:radial-gradient(circle,rgba(77,124,255,.35),transparent 65%);
+    top:-300px;left:-280px;
+    animation:float1 22s ease-in-out infinite;
+  }
+  .bg-decor::after{
+    width:680px;height:680px;
+    background:radial-gradient(circle,rgba(139,92,255,.32),transparent 65%);
+    bottom:-320px;right:-260px;
+    animation:float2 26s ease-in-out infinite;
+  }
+  .bg-grid{
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
+    -webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
+  }
+  @keyframes float1{
+    0%,100%{transform:translate(0,0)}
+    50%{transform:translate(80px,60px)}
+  }
+  @keyframes float2{
+    0%,100%{transform:translate(0,0)}
+    50%{transform:translate(-70px,-50px)}
   }
 
-  /* ---------------- HEADER ---------------- */
   header{
     position:sticky;top:0;z-index:100;
-    background:rgba(255,255,255,.72);
-    backdrop-filter:saturate(180%) blur(18px);
-    -webkit-backdrop-filter:saturate(180%) blur(18px);
-    border-bottom:1px solid rgba(230,235,243,.9);
+    background:rgba(10,14,26,.72);
+    backdrop-filter:saturate(180%) blur(20px);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid var(--line);
   }
   .header-inner{
-    max-width:1140px;margin:0 auto;
+    max-width:1180px;margin:0 auto;
     padding:14px 24px;
     display:flex;align-items:center;justify-content:space-between;gap:16px;
   }
   .logo{
     display:flex;align-items:center;gap:11px;
-    font-family:'Sora',sans-serif;
-    font-size:20px;font-weight:800;
-    letter-spacing:-.5px;color:var(--ink);
+    font-family:'Space Grotesk',sans-serif;
+    font-size:20px;font-weight:700;
+    letter-spacing:-.5px;color:var(--text);
     text-decoration:none;
   }
   .logo-mark{
     width:40px;height:40px;border-radius:12px;
-    background:linear-gradient(135deg,#3b6cff 0%,#7b5cff 100%);
+    background:linear-gradient(135deg,#4d7cff 0%,#8b5cff 100%);
     display:flex;align-items:center;justify-content:center;
-    color:#fff;font-size:20px;
-    box-shadow:0 10px 22px -8px rgba(59,108,255,.7);
+    color:#fff;
+    box-shadow:0 10px 24px -8px rgba(77,124,255,.7);
     flex-shrink:0;
-    transform:rotate(-8deg);
     transition:transform .4s cubic-bezier(.2,.9,.3,1.4);
   }
-  .logo:hover .logo-mark{transform:rotate(0deg) scale(1.05)}
+  .logo:hover .logo-mark{transform:rotate(-8deg) scale(1.06)}
+  .logo-mark svg{width:22px;height:22px}
   .logo-text span{
-    background:linear-gradient(135deg,#3b6cff 0%,#7b5cff 100%);
+    background:linear-gradient(135deg,#4d7cff 0%,#8b5cff 100%);
     -webkit-background-clip:text;background-clip:text;
     -webkit-text-fill-color:transparent;
   }
-  .header-cta{
-    display:none;
-    align-items:center;gap:8px;
-    font-size:13px;font-weight:600;color:var(--ink-2);
+  .header-status{
+    display:none;align-items:center;gap:8px;
+    font-size:12.5px;font-weight:600;color:var(--text-2);
     padding:8px 14px;border-radius:100px;
-    background:#fff;border:1px solid var(--line);
-    box-shadow:var(--shadow-sm);
+    background:rgba(255,255,255,.04);
+    border:1px solid var(--line);
   }
-  .header-cta .dot{
+  .header-status .dot{
     width:7px;height:7px;border-radius:50%;
-    background:#12b76a;box-shadow:0 0 0 3px rgba(18,183,106,.18);
+    background:var(--success);
+    box-shadow:0 0 10px var(--success);
     animation:pulse 2s ease-in-out infinite;
   }
   @keyframes pulse{
     0%,100%{opacity:1;transform:scale(1)}
-    50%{opacity:.6;transform:scale(.85)}
+    50%{opacity:.55;transform:scale(.85)}
   }
 
-  /* ---------------- CONTAINER ---------------- */
   .container{
-    max-width:1140px;margin:0 auto;
+    max-width:1180px;margin:0 auto;
     padding:0 24px 100px;
     position:relative;z-index:1;
   }
 
-  /* ---------------- HERO ---------------- */
-  .hero{
-    padding:70px 0 44px;
-    text-align:center;
-  }
+  .hero{padding:76px 0 48px;text-align:center}
   .hero-badge{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:7px 15px;
-    background:#fff;
-    border:1px solid var(--line);
+    display:inline-flex;align-items:center;gap:9px;
+    padding:8px 16px;
+    background:rgba(77,124,255,.10);
+    border:1px solid rgba(77,124,255,.25);
     border-radius:100px;
     font-size:12.5px;font-weight:600;
-    color:var(--ink-2);
-    box-shadow:var(--shadow-sm);
-    margin-bottom:22px;
+    color:#9fb8ff;
+    margin-bottom:24px;
+    backdrop-filter:blur(10px);
   }
-  .hero-badge .spark{
-    font-size:14px;
-  }
+  .hero-badge svg{width:14px;height:14px}
+
   h1{
-    font-family:'Sora',sans-serif;
-    font-size:clamp(34px,6vw,62px);
-    font-weight:800;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(36px,6.2vw,64px);
+    font-weight:700;
     letter-spacing:-.035em;
     line-height:1.02;
-    margin-bottom:18px;
-    color:var(--ink);
+    margin-bottom:20px;
+    color:#fff;
   }
   h1 .grad{
-    background:linear-gradient(135deg,#3b6cff 0%,#7b5cff 55%,#18b5d6 100%);
+    background:linear-gradient(135deg,#4d7cff 0%,#8b5cff 55%,#22d3ee 100%);
     -webkit-background-clip:text;background-clip:text;
     -webkit-text-fill-color:transparent;
-    position:relative;
     display:inline-block;
   }
   .subtitle{
-    font-size:clamp(15px,2.2vw,18px);
-    color:var(--muted);
-    max-width:560px;margin:0 auto;
+    font-size:clamp(15px,2.2vw,17.5px);
+    color:var(--text-2);
+    max-width:580px;margin:0 auto;
     font-weight:500;
   }
 
-  /* ---------------- SEARCH CARD ---------------- */
   .search-card{
-    background:#fff;
-    border-radius:var(--r-xl);
-    padding:24px;
-    box-shadow:var(--shadow-lg);
-    border:1px solid rgba(230,235,243,.8);
-    margin-bottom:44px;
+    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+    border:1px solid var(--line-2);
+    border-radius:26px;
+    padding:26px;
+    box-shadow:0 30px 70px -30px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+    margin-bottom:48px;
     position:relative;
   }
   .search-card::before{
     content:'';
-    position:absolute;inset:0;
-    border-radius:inherit;
-    padding:1px;
-    background:linear-gradient(135deg,rgba(59,108,255,.35),rgba(123,92,255,.15) 40%,transparent 70%);
-    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-    -webkit-mask-composite:xor;
-            mask-composite:exclude;
-    pointer-events:none;
+    position:absolute;top:0;left:20%;right:20%;
+    height:1px;
+    background:linear-gradient(90deg,transparent,rgba(77,124,255,.8),rgba(139,92,255,.6),transparent);
   }
 
   .fields{
@@ -199,122 +221,144 @@
     grid-template-columns:1fr 1fr;
     gap:14px;
   }
-  .field{display:flex;flex-direction:column}
+  .field{display:flex;flex-direction:column;position:relative}
   .field label{
-    font-size:12px;font-weight:700;
-    text-transform:uppercase;letter-spacing:.8px;
+    font-size:11.5px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.9px;
     color:var(--muted);
     margin-bottom:8px;padding-left:2px;
+    display:flex;align-items:center;gap:6px;
   }
+  .field label svg{width:12px;height:12px;color:var(--brand)}
+
+  .input-wrap{position:relative}
+  .input-icon{
+    position:absolute;
+    left:16px;top:50%;
+    transform:translateY(-50%);
+    width:18px;height:18px;
+    color:var(--muted);
+    pointer-events:none;
+    transition:color .2s;
+  }
+
   .field input,
   .field select{
     width:100%;
-    padding:15px 16px;
+    padding:15px 16px 15px 46px;
     border:1.5px solid var(--line-2);
-    border-radius:var(--r-md);
+    border-radius:14px;
     font-size:15px;font-weight:600;
     font-family:inherit;
-    background:#fbfcfe;
-    color:var(--ink);
+    background:rgba(255,255,255,.04);
+    color:var(--text);
     outline:none;
     transition:all .2s ease;
     appearance:none;-webkit-appearance:none;
-    min-height:52px;
+    min-height:54px;
   }
   .field select{
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238a94a8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7689' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     background-repeat:no-repeat;
     background-position:right 16px center;
-    padding-right:42px;
+    padding-right:44px;
     cursor:pointer;
   }
   .field input[type="date"]{
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a94a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
-    background-repeat:no-repeat;
-    background-position:right 16px center;
-    padding-right:42px;
+    padding-right:16px;
     cursor:pointer;
+    color-scheme:dark;
   }
-  .field input::placeholder{color:#a9b3c4;font-weight:500}
+  .field select option{
+    background:#131a2e;
+    color:#eef2fb;
+    padding:10px;
+  }
+  .field select optgroup{
+    background:#0f1424;
+    color:#6b7689;
+    font-weight:700;
+  }
+  .field input::placeholder{color:#5a6479;font-weight:500}
   .field input:hover,
-  .field select:hover{border-color:#c9d3e3;background:#fff}
+  .field select:hover{
+    border-color:rgba(255,255,255,.20);
+    background:rgba(255,255,255,.06);
+  }
   .field input:focus,
   .field select:focus{
     border-color:var(--brand);
-    background:#fff;
-    box-shadow:0 0 0 4px rgba(59,108,255,.12);
+    background:rgba(77,124,255,.08);
+    box-shadow:0 0 0 4px rgba(77,124,255,.15);
   }
+  .field input:focus ~ .input-icon,
+  .field select:focus ~ .input-icon{color:var(--brand)}
   .field select::-ms-expand{display:none}
 
-  /* swap button */
   .swap-btn{
     position:absolute;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%) translateY(2px);
-    width:38px;height:38px;border-radius:50%;
-    background:#fff;
-    border:1.5px solid var(--line-2);
+    top:calc(50% + 10px);
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:42px;height:42px;border-radius:50%;
+    background:linear-gradient(135deg,#4d7cff,#8b5cff);
+    border:none;
     display:none;
     align-items:center;justify-content:center;
     cursor:pointer;
-    color:var(--brand);
-    font-size:16px;
+    color:#fff;
     z-index:5;
-    transition:all .25s ease;
-    box-shadow:0 6px 14px -4px rgba(16,24,40,.12);
+    transition:all .3s cubic-bezier(.2,.9,.3,1.4);
+    box-shadow:0 8px 24px -6px rgba(77,124,255,.7);
   }
-  .swap-btn:hover{
-    transform:translate(-50%,-50%) translateY(2px) rotate(180deg);
-    border-color:var(--brand);
-    box-shadow:0 8px 20px -4px rgba(59,108,255,.4);
-  }
-  .search-card{position:relative}
+  .swap-btn svg{width:18px;height:18px}
+  .swap-btn:hover{transform:translate(-50%,-50%) rotate(180deg) scale(1.1)}
 
   .search-button{
     width:100%;
     margin-top:18px;
-    padding:18px 24px;
+    padding:19px 24px;
     border:none;
-    border-radius:var(--r-md);
-    background:linear-gradient(135deg,#3b6cff 0%,#7b5cff 100%);
+    border-radius:14px;
+    background:linear-gradient(135deg,#4d7cff 0%,#8b5cff 100%);
     color:#fff;
     font-size:16px;font-weight:700;
     font-family:inherit;
     letter-spacing:.2px;
     cursor:pointer;
     transition:all .22s ease;
-    box-shadow:0 14px 30px -10px rgba(59,108,255,.55);
+    box-shadow:0 16px 40px -12px rgba(77,124,255,.65);
     display:flex;align-items:center;justify-content:center;gap:10px;
-    min-height:56px;
+    min-height:58px;
     position:relative;
     overflow:hidden;
   }
+  .search-button svg{width:20px;height:20px}
   .search-button::before{
     content:'';
     position:absolute;inset:0;
-    background:linear-gradient(135deg,#7b5cff 0%,#3b6cff 100%);
+    background:linear-gradient(135deg,#8b5cff 0%,#4d7cff 100%);
     opacity:0;transition:opacity .25s;
   }
   .search-button>*{position:relative;z-index:1}
-  .search-button:hover{transform:translateY(-2px);box-shadow:0 20px 40px -12px rgba(59,108,255,.65)}
+  .search-button:hover{transform:translateY(-2px);box-shadow:0 22px 50px -14px rgba(77,124,255,.75)}
   .search-button:hover::before{opacity:1}
-  .search-button:active{transform:scale(.99) translateY(0)}
+  .search-button:active{transform:scale(.99)}
 
-  /* ---------------- LOADER ---------------- */
-  .loader{display:none;text-align:center;padding:60px 20px}
+  .loader{display:none;text-align:center;padding:64px 20px}
   .loader.active{display:block;animation:fadeIn .3s ease}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   .spinner{
-    width:44px;height:44px;
-    border:3px solid var(--line-2);
+    width:48px;height:48px;
+    border:3px solid rgba(255,255,255,.08);
     border-top-color:var(--brand);
+    border-right-color:var(--brand-2);
     border-radius:50%;
-    animation:spin .75s linear infinite;
-    margin:0 auto 16px;
+    animation:spin .8s linear infinite;
+    margin:0 auto 18px;
   }
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* ---------------- RESULTS ---------------- */
   .results{animation:fadeUp .5s ease both}
   @keyframes fadeUp{
     from{opacity:0;transform:translateY(12px)}
@@ -325,182 +369,218 @@
     margin-bottom:20px;gap:12px;flex-wrap:wrap;
   }
   .results-title{
-    font-family:'Sora',sans-serif;
+    font-family:'Space Grotesk',sans-serif;
     font-size:22px;font-weight:700;
     letter-spacing:-.02em;
-    display:flex;align-items:center;gap:10px;
+    display:flex;align-items:center;gap:11px;
+    color:#fff;
   }
-  .results-title::before{
-    content:'';display:inline-block;
-    width:6px;height:22px;border-radius:3px;
-    background:linear-gradient(180deg,#3b6cff,#7b5cff);
+  .results-title svg{
+    width:20px;height:20px;
+    color:var(--brand);
   }
   .results-sub{
-    font-size:13px;font-weight:600;
-    color:var(--brand);
-    padding:6px 14px;
-    background:rgba(59,108,255,.08);
-    border:1px solid rgba(59,108,255,.15);
+    font-size:12.5px;font-weight:600;
+    color:#9fb8ff;
+    padding:7px 14px;
+    background:rgba(77,124,255,.12);
+    border:1px solid rgba(77,124,255,.25);
     border-radius:100px;
   }
 
   .ticket-list{display:flex;flex-direction:column;gap:14px}
 
   .ticket{
-    background:#fff;
-    border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
+    border:1px solid var(--line-2);
     padding:22px 24px;
-    border-radius:var(--r-lg);
+    border-radius:20px;
     display:flex;justify-content:space-between;align-items:center;gap:20px;
-    transition:all .28s cubic-bezier(.2,.8,.3,1);
+    transition:all .3s cubic-bezier(.2,.8,.3,1);
     position:relative;
     overflow:hidden;
-    box-shadow:var(--shadow-sm);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
   }
   .ticket::after{
     content:'';
-    position:absolute;left:0;top:0;bottom:0;width:4px;
-    background:linear-gradient(180deg,#3b6cff,#7b5cff);
+    position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,#4d7cff,#8b5cff,#22d3ee);
     transform:scaleY(0);transform-origin:top;
-    transition:transform .35s cubic-bezier(.2,.8,.3,1);
+    transition:transform .4s cubic-bezier(.2,.8,.3,1);
     border-radius:0 4px 4px 0;
   }
   .ticket:hover{
-    border-color:transparent;
+    border-color:rgba(77,124,255,.4);
     transform:translateY(-3px);
-    box-shadow:0 24px 48px -20px rgba(59,108,255,.28), 0 8px 20px -8px rgba(16,24,40,.08);
+    box-shadow:0 30px 60px -20px rgba(77,124,255,.35),0 8px 20px -8px rgba(0,0,0,.4);
   }
   .ticket:hover::after{transform:scaleY(1)}
 
-  .ticket-left{display:flex;flex-direction:column;gap:8px;min-width:0;flex:1}
+  .ticket-left{display:flex;flex-direction:column;gap:9px;min-width:0;flex:1}
   .airline{
-    font-size:16.5px;font-weight:800;
-    color:var(--ink);
-    display:flex;align-items:center;gap:11px;
+    font-size:16.5px;font-weight:700;
+    color:#fff;
+    display:flex;align-items:center;gap:12px;
     letter-spacing:-.01em;
   }
   .airline-logo{
-    width:38px;height:38px;border-radius:11px;
-    background:linear-gradient(135deg,#eef3ff 0%,#f3eeff 100%);
-    border:1px solid #e0e7ff;
+    width:42px;height:42px;border-radius:12px;
+    background:linear-gradient(135deg,rgba(77,124,255,.20),rgba(139,92,255,.20));
+    border:1px solid rgba(77,124,255,.30);
     display:flex;align-items:center;justify-content:center;
-    font-family:'Sora',sans-serif;
-    font-size:12px;font-weight:800;
-    color:#3b6cff;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:12.5px;font-weight:700;
+    color:#9fb8ff;
     flex-shrink:0;
     letter-spacing:-.5px;
+    box-shadow:0 4px 12px -4px rgba(77,124,255,.4);
   }
+  .airline-code{color:var(--muted);font-weight:600;font-size:13px;margin-left:2px}
+
   .route{
-    color:var(--ink-2);
+    color:var(--text-2);
     font-size:14px;font-weight:600;
-    display:flex;align-items:center;gap:8px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .route svg{
+    width:16px;height:16px;
+    color:var(--brand);
   }
   .route-arrow{
     color:var(--brand);font-weight:800;
-    font-size:15px;
+    display:flex;align-items:center;
   }
+
   .details-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px}
   .badge{
     display:inline-flex;align-items:center;gap:5px;
     padding:4px 11px;border-radius:100px;
-    font-size:11px;font-weight:800;
-    letter-spacing:.4px;text-transform:uppercase;
+    font-size:10.5px;font-weight:800;
+    letter-spacing:.5px;text-transform:uppercase;
   }
-  .badge-direct{background:rgba(18,183,106,.10);color:#0c8a4f;border:1px solid rgba(18,183,106,.20)}
-  .badge-stop{background:rgba(247,144,9,.10);color:#b96f00;border:1px solid rgba(247,144,9,.22)}
-  .time-info{font-size:12.5px;color:var(--muted);font-weight:600}
+  .badge svg{width:11px;height:11px}
+  .badge-direct{
+    background:rgba(34,197,94,.15);
+    color:#4ade80;
+    border:1px solid rgba(34,197,94,.28);
+  }
+  .badge-stop{
+    background:rgba(245,158,11,.15);
+    color:#fbbf24;
+    border:1px solid rgba(245,158,11,.28);
+  }
+  .time-info{
+    font-size:12.5px;color:var(--muted);font-weight:600;
+    display:flex;align-items:center;gap:5px;
+  }
+  .time-info svg{width:12px;height:12px}
 
-  .ticket-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0}
+  .ticket-right{
+    display:flex;flex-direction:column;align-items:flex-end;gap:10px;
+    flex-shrink:0;
+  }
   .price{
-    font-family:'Sora',sans-serif;
-    font-size:28px;font-weight:800;
-    letter-spacing:-.03em;
-    background:linear-gradient(135deg,#0d1526 0%,#3b6cff 130%);
-    -webkit-background-clip:text;background-clip:text;
-    -webkit-text-fill-color:transparent;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:30px;font-weight:700;
+    letter-spacing:-.035em;
+    color:#fff;
     line-height:1;
-    display:flex;align-items:baseline;gap:2px;
+    display:flex;align-items:baseline;gap:3px;
   }
   .price-currency{
-    font-size:16px;font-weight:700;
+    font-size:16px;font-weight:600;
     color:var(--muted);
-    -webkit-text-fill-color:var(--muted);
   }
+
   .button{
     display:inline-flex;align-items:center;gap:7px;
-    background:linear-gradient(135deg,#3b6cff 0%,#7b5cff 100%);
+    background:linear-gradient(135deg,#4d7cff 0%,#8b5cff 100%);
     color:#fff;
-    padding:11px 20px;
+    padding:12px 20px;
     border-radius:12px;
     text-decoration:none;
     font-size:13.5px;font-weight:700;
     letter-spacing:.1px;
     transition:all .2s ease;
     white-space:nowrap;
-    box-shadow:0 8px 20px -8px rgba(59,108,255,.6);
+    box-shadow:0 10px 24px -8px rgba(77,124,255,.65);
     min-height:42px;
   }
+  .button svg{width:14px;height:14px;transition:transform .2s}
   .button:hover{
     transform:translateY(-1px);
-    box-shadow:0 14px 28px -10px rgba(59,108,255,.75);
+    box-shadow:0 16px 32px -10px rgba(77,124,255,.8);
   }
+  .button:hover svg{transform:translateX(3px)}
   .button:active{transform:scale(.97)}
 
-  /* ---------------- EMPTY ---------------- */
   .empty{
     text-align:center;
-    color:var(--muted);
+    color:var(--text-2);
     padding:64px 24px;
-    background:#fff;
-    border-radius:var(--r-xl);
-    border:1px dashed var(--line-2);
+    background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));
+    border-radius:24px;
+    border:1px dashed rgba(255,255,255,.14);
     font-size:15px;font-weight:500;
   }
-  .empty-icon{
-    font-size:48px;margin-bottom:14px;display:block;
-    filter:grayscale(.3);
+  .empty svg{
+    width:56px;height:56px;
+    margin-bottom:16px;
+    color:var(--muted);
+    opacity:.7;
   }
 
-  /* ---------------- FEATURES ---------------- */
   .features{
-    margin-top:60px;
+    margin-top:64px;
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:18px;
   }
   .feature{
-    background:#fff;
+    background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
     border:1px solid var(--line);
-    border-radius:var(--r-lg);
-    padding:24px;
-    transition:all .25s ease;
+    border-radius:20px;
+    padding:26px;
+    transition:all .28s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .feature::before{
+    content:'';
+    position:absolute;top:0;left:0;right:0;
+    height:1px;
+    background:linear-gradient(90deg,transparent,rgba(77,124,255,.5),transparent);
+    opacity:0;transition:opacity .3s;
   }
   .feature:hover{
-    transform:translateY(-3px);
-    box-shadow:0 20px 40px -20px rgba(16,24,40,.15);
-    border-color:transparent;
+    transform:translateY(-4px);
+    border-color:rgba(77,124,255,.3);
+    box-shadow:0 24px 50px -20px rgba(77,124,255,.3);
   }
+  .feature:hover::before{opacity:1}
   .feature-icon{
-    width:48px;height:48px;border-radius:14px;
+    width:52px;height:52px;border-radius:15px;
     display:flex;align-items:center;justify-content:center;
-    font-size:22px;margin-bottom:14px;
-    background:linear-gradient(135deg,#eef3ff 0%,#f3eeff 100%);
-    border:1px solid #e0e7ff;
+    margin-bottom:16px;
+    background:linear-gradient(135deg,rgba(77,124,255,.18),rgba(139,92,255,.18));
+    border:1px solid rgba(77,124,255,.28);
+    color:#9fb8ff;
   }
+  .feature-icon svg{width:24px;height:24px}
   .feature h3{
-    font-size:16px;font-weight:800;
-    margin-bottom:6px;color:var(--ink);
+    font-size:16px;font-weight:700;
+    margin-bottom:6px;color:#fff;
     letter-spacing:-.01em;
   }
   .feature p{
     font-size:13.5px;color:var(--muted);
-    font-weight:500;line-height:1.55;
+    font-weight:500;line-height:1.6;
   }
 
-  /* ---------------- FOOTER ---------------- */
   footer{
     margin-top:80px;
-    padding:40px 24px 32px;
+    padding:44px 24px 32px;
     border-top:1px solid var(--line);
     text-align:center;
     color:var(--muted);
@@ -510,38 +590,43 @@
     z-index:1;
   }
   .footer-links{
-    display:flex;justify-content:center;gap:22px;
-    flex-wrap:wrap;margin-bottom:14px;
+    display:flex;justify-content:center;gap:24px;
+    flex-wrap:wrap;margin-bottom:16px;
   }
   footer a{
-    color:var(--ink-2);text-decoration:none;
+    color:var(--text-2);text-decoration:none;
     transition:color .2s;font-weight:600;
   }
   footer a:hover{color:var(--brand)}
+  .footer-brand{
+    display:inline-flex;align-items:center;gap:8px;
+    margin-bottom:10px;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;color:#fff;font-size:15px;
+  }
+  .footer-brand svg{width:16px;height:16px;color:var(--brand)}
 
-  /* ---------------- MOBILE ---------------- */
-  @media (max-width:720px){
+  @media (max-width:760px){
     .header-inner{padding:12px 16px}
     .logo{font-size:18px}
-    .logo-mark{width:36px;height:36px;font-size:18px}
-    .header-cta{display:none}
+    .logo-mark{width:36px;height:36px}
+    .logo-mark svg{width:20px;height:20px}
+    .header-status{display:none}
 
     .container{padding:0 16px 70px}
 
-    .hero{padding:40px 0 28px}
-    .hero-badge{font-size:12px;padding:6px 13px;margin-bottom:16px}
-    h1{margin-bottom:14px}
+    .hero{padding:44px 0 32px}
+    .hero-badge{font-size:11.5px;padding:6px 13px;margin-bottom:18px}
 
-    .search-card{padding:18px;border-radius:22px;margin-bottom:32px}
+    .search-card{padding:18px;border-radius:22px;margin-bottom:34px}
 
     .fields{grid-template-columns:1fr;gap:12px}
 
-    /* swap только на desktop */
     .swap-btn{display:none !important}
 
-    .field input,.field select{font-size:16px;min-height:52px}
+    .field input,.field select{font-size:16px;min-height:54px}
 
-    .search-button{font-size:15.5px;min-height:54px;margin-top:14px}
+    .search-button{font-size:15.5px;min-height:56px;margin-top:14px}
 
     .ticket{
       flex-direction:column;
@@ -559,44 +644,51 @@
       padding-top:16px;
       gap:12px;
     }
-    .price{font-size:24px}
-    .button{padding:11px 18px;font-size:13px}
+    .price{font-size:26px}
+    .button{padding:12px 20px;font-size:13px}
 
     .results-title{font-size:19px}
-    .results-sub{font-size:12px;padding:5px 12px}
+    .results-sub{font-size:12px;padding:6px 12px}
 
-    .features{grid-template-columns:1fr;gap:12px;margin-top:44px}
-    .feature{padding:20px}
+    .features{grid-template-columns:1fr;gap:12px;margin-top:48px}
+    .feature{padding:22px}
 
-    footer{margin-top:56px;padding:32px 16px 24px}
+    footer{margin-top:60px;padding:32px 16px 24px}
   }
 
   @media (max-width:380px){
-    h1{font-size:28px}
+    h1{font-size:30px}
     .ticket-right{flex-direction:column;align-items:stretch}
     .button{width:100%;justify-content:center}
     .price{text-align:left}
   }
 
-  /* показываем swap на широких экранах */
-  @media (min-width:721px){
+  @media (min-width:761px){
     .swap-btn{display:flex}
-    .header-cta{display:inline-flex}
+    .header-status{display:inline-flex}
   }
 </style>
 </head>
 
 <body>
 
+<div class="bg-decor">
+  <div class="bg-grid"></div>
+</div>
+
 <header>
   <div class="header-inner">
     <a href="/" class="logo">
-      <div class="logo-mark">✈</div>
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+        </svg>
+      </div>
       <div class="logo-text">Небо<span>Дешево</span></div>
     </a>
-    <div class="header-cta">
+    <div class="header-status">
       <span class="dot"></span>
-      Онлайн-поиск работает
+      Поиск работает
     </div>
   </div>
 </header>
@@ -605,8 +697,10 @@
 
   <section class="hero">
     <div class="hero-badge">
-      <span class="spark">✨</span>
-      Сравниваем цены среди 700+ авиакомпаний
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+      Мгновенный поиск по 700+ авиакомпаниям
     </div>
     <h1>Летай <span class="grad">дешевле</span><br>по всему миру</h1>
     <p class="subtitle">
@@ -616,118 +710,178 @@
 
   <div class="search-card">
 
-    <button class="swap-btn" type="button" onclick="swapCities()" title="Поменять города">⇄</button>
+    <button class="swap-btn" type="button" onclick="swapCities()" title="Поменять города" aria-label="Поменять города">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="17 1 21 5 17 9"/>
+        <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+        <polyline points="7 23 3 19 7 15"/>
+        <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+      </svg>
+    </button>
 
     <div class="fields">
 
       <div class="field">
-        <label>Откуда</label>
-        <select id="from">
-          <option value="">Выберите город вылета</option>
-          <optgroup label="Дагестан">
-            <option value="MCX">Махачкала (Уйташ) — MCX</option>
-          </optgroup>
-          <optgroup label="Москва">
-            <option value="SVO">Москва (Шереметьево) — SVO</option>
-            <option value="DME">Москва (Домодедово) — DME</option>
-            <option value="VKO">Москва (Внуково) — VKO</option>
-            <option value="ZIA">Москва (Жуковский) — ZIA</option>
-          </optgroup>
-          <optgroup label="Дубай">
-            <option value="DXB">Дубай (Международный) — DXB</option>
-            <option value="DWC">Дубай (Аль-Мактум) — DWC</option>
-          </optgroup>
-          <optgroup label="Таиланд">
-            <option value="BKK">Бангкок (Суварнабхуми) — BKK</option>
-            <option value="DMK">Бангкок (Дон Муанг) — DMK</option>
-            <option value="HKT">Пхукет — HKT</option>
-            <option value="CNX">Чиангмай — CNX</option>
-            <option value="KBV">Краби — KBV</option>
-            <option value="UTP">У-Тапао (Паттайя) — UTP</option>
-          </optgroup>
-          <optgroup label="Популярные">
-            <option value="IST">Стамбул — IST</option>
-            <option value="HEL">Хельсинки — HEL</option>
-            <option value="BER">Берлин — BER</option>
-            <option value="CDG">Париж — CDG</option>
-            <option value="LHR">Лондон — LHR</option>
-            <option value="JFK">Нью-Йорк — JFK</option>
-            <option value="AYT">Анталья — AYT</option>
-            <option value="BCN">Барселона — BCN</option>
-            <option value="FCO">Рим — FCO</option>
-            <option value="AMS">Амстердам — AMS</option>
-            <option value="VIE">Вена — VIE</option>
-            <option value="PRG">Прага — PRG</option>
-            <option value="WAW">Варшава — WAW</option>
-            <option value="ARN">Стокгольм — ARN</option>
-            <option value="OSL">Осло — OSL</option>
-            <option value="CPH">Копенгаген — CPH</option>
-            <option value="HND">Токио (Ханэда) — HND</option>
-          </optgroup>
-        </select>
+        <label>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          Откуда
+        </label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+          </svg>
+          <select id="from">
+            <option value="">Выберите город вылета</option>
+            <optgroup label="Дагестан">
+              <option value="MCX">Махачкала (Уйташ) — MCX</option>
+            </optgroup>
+            <optgroup label="Москва">
+              <option value="SVO">Москва (Шереметьево) — SVO</option>
+              <option value="DME">Москва (Домодедово) — DME</option>
+              <option value="VKO">Москва (Внуково) — VKO</option>
+              <option value="ZIA">Москва (Жуковский) — ZIA</option>
+            </optgroup>
+            <optgroup label="Дубай">
+              <option value="DXB">Дубай (Международный) — DXB</option>
+              <option value="DWC">Дубай (Аль-Мактум) — DWC</option>
+            </optgroup>
+            <optgroup label="Таиланд">
+              <option value="BKK">Бангкок (Суварнабхуми) — BKK</option>
+              <option value="DMK">Бангкок (Дон Муанг) — DMK</option>
+              <option value="HKT">Пхукет — HKT</option>
+              <option value="CNX">Чиангмай — CNX</option>
+              <option value="KBV">Краби — KBV</option>
+              <option value="UTP">У-Тапао (Паттайя) — UTP</option>
+            </optgroup>
+            <optgroup label="Популярные">
+              <option value="IST">Стамбул — IST</option>
+              <option value="HEL">Хельсинки — HEL</option>
+              <option value="BER">Берлин — BER</option>
+              <option value="CDG">Париж — CDG</option>
+              <option value="LHR">Лондон — LHR</option>
+              <option value="JFK">Нью-Йорк — JFK</option>
+              <option value="AYT">Анталья — AYT</option>
+              <option value="BCN">Барселона — BCN</option>
+              <option value="FCO">Рим — FCO</option>
+              <option value="AMS">Амстердам — AMS</option>
+              <option value="VIE">Вена — VIE</option>
+              <option value="PRG">Прага — PRG</option>
+              <option value="WAW">Варшава — WAW</option>
+              <option value="ARN">Стокгольм — ARN</option>
+              <option value="OSL">Осло — OSL</option>
+              <option value="CPH">Копенгаген — CPH</option>
+              <option value="HND">Токио (Ханэда) — HND</option>
+            </optgroup>
+          </select>
+        </div>
       </div>
 
       <div class="field">
-        <label>Куда</label>
-        <select id="to">
-          <option value="">Выберите город назначения</option>
-          <optgroup label="Дагестан">
-            <option value="MCX">Махачкала (Уйташ) — MCX</option>
-          </optgroup>
-          <optgroup label="Москва">
-            <option value="SVO">Москва (Шереметьево) — SVO</option>
-            <option value="DME">Москва (Домодедово) — DME</option>
-            <option value="VKO">Москва (Внуково) — VKO</option>
-            <option value="ZIA">Москва (Жуковский) — ZIA</option>
-          </optgroup>
-          <optgroup label="Дубай">
-            <option value="DXB">Дубай (Международный) — DXB</option>
-            <option value="DWC">Дубай (Аль-Мактум) — DWC</option>
-          </optgroup>
-          <optgroup label="Таиланд">
-            <option value="BKK">Бангкок (Суварнабхуми) — BKK</option>
-            <option value="DMK">Бангкок (Дон Муанг) — DMK</option>
-            <option value="HKT">Пхукет — HKT</option>
-            <option value="CNX">Чиангмай — CNX</option>
-            <option value="KBV">Краби — KBV</option>
-            <option value="UTP">У-Тапао (Паттайя) — UTP</option>
-          </optgroup>
-          <optgroup label="Популярные">
-            <option value="IST">Стамбул — IST</option>
-            <option value="HEL">Хельсинки — HEL</option>
-            <option value="BER">Берлин — BER</option>
-            <option value="CDG">Париж — CDG</option>
-            <option value="LHR">Лондон — LHR</option>
-            <option value="JFK">Нью-Йорк — JFK</option>
-            <option value="AYT">Анталья — AYT</option>
-            <option value="BCN">Барселона — BCN</option>
-            <option value="FCO">Рим — FCO</option>
-            <option value="AMS">Амстердам — AMS</option>
-            <option value="VIE">Вена — VIE</option>
-            <option value="PRG">Прага — PRG</option>
-            <option value="WAW">Варшава — WAW</option>
-            <option value="ARN">Стокгольм — ARN</option>
-            <option value="OSL">Осло — OSL</option>
-            <option value="CPH">Копенгаген — CPH</option>
-            <option value="HND">Токио (Ханэда) — HND</option>
-          </optgroup>
-        </select>
+        <label>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          Куда
+        </label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+          </svg>
+          <select id="to">
+            <option value="">Выберите город назначения</option>
+            <optgroup label="Дагестан">
+              <option value="MCX">Махачкала (Уйташ) — MCX</option>
+            </optgroup>
+            <optgroup label="Москва">
+              <option value="SVO">Москва (Шереметьево) — SVO</option>
+              <option value="DME">Москва (Домодедово) — DME</option>
+              <option value="VKO">Москва (Внуково) — VKO</option>
+              <option value="ZIA">Москва (Жуковский) — ZIA</option>
+            </optgroup>
+            <optgroup label="Дубай">
+              <option value="DXB">Дубай (Международный) — DXB</option>
+              <option value="DWC">Дубай (Аль-Мактум) — DWC</option>
+            </optgroup>
+            <optgroup label="Таиланд">
+              <option value="BKK">Бангкок (Суварнабхуми) — BKK</option>
+              <option value="DMK">Бангкок (Дон Муанг) — DMK</option>
+              <option value="HKT">Пхукет — HKT</option>
+              <option value="CNX">Чиангмай — CNX</option>
+              <option value="KBV">Краби — KBV</option>
+              <option value="UTP">У-Тапао (Паттайя) — UTP</option>
+            </optgroup>
+            <optgroup label="Популярные">
+              <option value="IST">Стамбул — IST</option>
+              <option value="HEL">Хельсинки — HEL</option>
+              <option value="BER">Берлин — BER</option>
+              <option value="CDG">Париж — CDG</option>
+              <option value="LHR">Лондон — LHR</option>
+              <option value="JFK">Нью-Йорк — JFK</option>
+              <option value="AYT">Анталья — AYT</option>
+              <option value="BCN">Барселона — BCN</option>
+              <option value="FCO">Рим — FCO</option>
+              <option value="AMS">Амстердам — AMS</option>
+              <option value="VIE">Вена — VIE</option>
+              <option value="PRG">Прага — PRG</option>
+              <option value="WAW">Варшава — WAW</option>
+              <option value="ARN">Стокгольм — ARN</option>
+              <option value="OSL">Осло — OSL</option>
+              <option value="CPH">Копенгаген — CPH</option>
+              <option value="HND">Токио (Ханэда) — HND</option>
+            </optgroup>
+          </select>
+        </div>
       </div>
 
       <div class="field">
-        <label>Дата вылета</label>
-        <input type="date" id="departure">
+        <label>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Дата вылета
+        </label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 2 11 13"/>
+            <path d="M22 2l-7 20-4-9-9-4 20-7z"/>
+          </svg>
+          <input type="date" id="departure">
+        </div>
       </div>
 
       <div class="field">
-        <label>Дата обратно</label>
-        <input type="date" id="return">
+        <label>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Дата обратно
+        </label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 22 13 11"/>
+            <path d="M2 22l7-20 4 9 9 4-20 7z"/>
+          </svg>
+          <input type="date" id="return">
+        </div>
       </div>
 
     </div>
 
     <button class="search-button" onclick="searchFlights()">
-      <span>🔍</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
       <span>Найти билеты</span>
     </button>
 
@@ -735,34 +889,56 @@
 
   <div class="loader" id="loader">
     <div class="spinner"></div>
-    <div style="color:var(--muted);font-size:14px;font-weight:600">Ищем лучшие предложения…</div>
+    <div style="color:var(--text-2);font-size:14px;font-weight:600">Ищем лучшие предложения…</div>
   </div>
 
   <div class="results" id="results" style="display:none">
     <div class="results-header">
-      <div class="results-title">Результаты поиска</div>
+      <div class="results-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        Результаты поиска
+      </div>
       <div class="results-sub" id="resultsSub"></div>
     </div>
     <div class="ticket-list" id="tickets"></div>
     <div class="empty" id="empty" style="display:none">
-      <span class="empty-icon">🔎</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
       <div>Введите направление и дату, чтобы увидеть билеты.</div>
     </div>
   </div>
 
   <section class="features">
     <div class="feature">
-      <div class="feature-icon">⚡</div>
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      </div>
       <h3>Мгновенный поиск</h3>
       <p>Сотни авиакомпаний и агентств проверяются за одну секунду</p>
     </div>
     <div class="feature">
-      <div class="feature-icon">💰</div>
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"/>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+      </div>
       <h3>Лучшая цена</h3>
-      <p>Мы находим самые дешёвые билеты и показываем без наценок</p>
+      <p>Находим самые дешёвые билеты и показываем без наценок</p>
     </div>
     <div class="feature">
-      <div class="feature-icon">🛡️</div>
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+      </div>
       <h3>Безопасно</h3>
       <p>Переход на проверенные сайты авиакомпаний и агентств</p>
     </div>
@@ -771,6 +947,12 @@
 </div>
 
 <footer>
+  <div class="footer-brand">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+    </svg>
+    НебоДешево
+  </div>
   <div class="footer-links">
     <a href="#" onclick="event.preventDefault()">О сервисе</a>
     <a href="#" onclick="event.preventDefault()">Помощь</a>
@@ -830,6 +1012,7 @@
 
     // ============================================================
     // ВАШ ТОКЕН TRAVELPAYOUTS — вставьте сюда
+    // Получить: https://www.travelpayouts.com/
     // ============================================================
     const API_TOKEN='YOUR_API_TOKEN';
 
@@ -857,7 +1040,12 @@
         ticketsContainer.innerHTML='';
         emptyBlock.style.display='block';
         emptyBlock.innerHTML=`
-          <span class="empty-icon">😔</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M8 15s1.5-2 4-2 4 2 4 2"/>
+            <line x1="9" y1="9" x2="9.01" y2="9"/>
+            <line x1="15" y1="9" x2="15.01" y2="9"/>
+          </svg>
           <div>По этому направлению билетов не найдено.<br>Попробуйте изменить даты или города.</div>
         `;
         return;
@@ -873,6 +1061,9 @@
 
         const badgeClass=tr===0?'badge-direct':'badge-stop';
         const badgeText=tr===0?'Прямой':`${tr} перес.`;
+        const badgeIcon=tr===0
+          ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
+          : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
 
         const bookUrl=`https://www.aviasales.ru/search/${from}${departure}${to}${returnDate||''}${tr===0?'':'1'}`;
 
@@ -881,20 +1072,37 @@
             <div class="ticket-left">
               <div class="airline">
                 <span class="airline-logo">${getAirlineLogo(code)}</span>
-                <span>${code} ${fn}</span>
+                <span>${code}<span class="airline-code">· ${fn}</span></span>
               </div>
               <div class="route">
-                ${from} <span class="route-arrow">→</span> ${to}
+                ${from}
+                <span class="route-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
+                  </svg>
+                </span>
+                ${to}
               </div>
               <div class="details-row">
-                <span class="badge ${badgeClass}">${badgeText}</span>
-                <span class="time-info">Вылет в ${dep}</span>
+                <span class="badge ${badgeClass}">${badgeIcon}${badgeText}</span>
+                <span class="time-info">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  Вылет в ${dep}
+                </span>
               </div>
             </div>
             <div class="ticket-right">
               <div class="price">${price}<span class="price-currency">₽</span></div>
               <a href="${bookUrl}" target="_blank" rel="noopener" class="button">
-                Забронировать →
+                Забронировать
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
               </a>
             </div>
           </div>
@@ -911,7 +1119,11 @@
       const eb=document.getElementById('empty');
       eb.style.display='block';
       eb.innerHTML=`
-        <span class="empty-icon">⚠️</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
         <div>Не удалось загрузить данные.<br>Проверьте соединение или попробуйте позже.</div>
       `;
     }

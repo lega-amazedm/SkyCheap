@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="НебоДешево — поиск дешёвых авиабилетов по всему миру">
+<title>НебоДешево — дешёвые авиабилеты</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#f6f8fc;
+    --bg-2:#eef2f9;
+    --white:#ffffff;
+    --ink:#0d1526;
+    --ink-2:#3c4a63;
+    --muted:#8a94a8;
+    --line:#e6ebf3;
+    --line-2:#dfe6f0;
+    --brand:#3b6cff;
+    --brand-2:#7b5cff;
+    --brand-3:#18b5d6;
+    --success:#12b76a;
+    --warn:#f79009;
+    --shadow-sm:0 1px 2px rgba(16,24,40,.04);
+    --shadow-md:0 8px 24px -8px rgba(16,24,40,.10), 0 2px 6px rgba(16,24,40,.04);
+    --shadow-lg:0 30px 60px -20px rgba(59,108,255,.18), 0 12px 30px -10px rgba(16,24,40,.08);
+    --r-xl:28px;
+    --r-lg:20px;
+    --r-md:14px;
+    --r-sm:10px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* фон — мягкие градиентные пятна */
+  body::before,body::after{
+    content:'';
+    position:fixed;
+    border-radius:50%;
+    filter:blur(120px);
+    pointer-events:none;
+    z-index:0;
+  }
+  body::before{
+    width:640px;height:640px;
+    background:radial-gradient(circle,rgba(123,92,255,.20),transparent 65%);
+    top:-260px;left:-220px;
+  }
+  body::after{
+    width:600px;height:600px;
+    background:radial-gradient(circle,rgba(59,108,255,.18),transparent 65%);
+    top:200px;right:-260px;
+  }
+
+  /* ---------------- HEADER ---------------- */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(255,255,255,.72);
+    backdrop-filter:saturate(180%) blur(18px);
+    -webkit-backdrop-filter:saturate(180%) blur(18px);
+    border-bottom:1px solid rgba(230,235,243,.9);
+  }
+  .header-inner{
+    max-width:1140px;margin:0 auto;
+    padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .logo{
+    display:flex;align-items:center;gap:11px;
+    font-family:'Sora',sans-serif;
+    font-size:20px;font-weight:800;
+    letter-spacing:-.5px;color:var(--ink);
+    text-decoration:none;
+  }
+  .logo-mark{
+    width:40px;height:40px;border-radius:12px;
+    background:linear-gradient(135deg,#3b6cff 0%,#7b5cff 100%);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:20px;
+    box-shadow:0 10px 22px -8px rgba(59,108,255,.7);
+    flex-shrink:0;
+    transform:rotate(-8deg);
+    transition:transform .4s cubic-bezier(.2,.9,.3,1.4);
+  }
+  .logo:hover .logo-mark{transform:rotate(0deg) scale(1.05)}
+  .logo-text span{
+    background:linear-gradient(135deg,#3b6cff 0%,#7b5cff 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .header-cta{
+    display:none;
+    align-items:center;gap:8px;
+    font-size:13px;font-weight:600;color:var(--ink-2);
+    padding:8px 14px;border-radius:100px;
+    background:#fff;border:1px solid var(--line);
+    box-shadow:var(--shadow-sm);
+  }
+  .header-cta .dot{
+    width:7px;height:7px;border-radius:50%;
+    background:#12b76a;box-shadow:0 0 0 3px rgba(18,183,106,.18);
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;transform:scale(1)}
+    50%{opacity:.6;transform:scale(.85)}
+  }
+
+  /* ---------------- CONTAINER ---------------- */
+  .container{
+    max-width:1140px;margin:0 auto;
+    padding:0 24px 100px;
+    position:relative;z-index:1;
+  }
+
+  /* ---------------- HERO ---------------- */
+  .hero{
+    padding:70px 0 44px;
+    text-align:center;
+  }
+  .hero-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:7px 15px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:100px;
+    font-size:12.5px;font-weight:600;
+    color:var(--ink-2);
+    box-shadow:var(--shadow-sm);
+    margin-bottom:22px;
+  }
+  .hero-badge .spark{
+    font-size:14px;
+  }
+  h1{
+    font-family:'Sora',sans-serif;
+    font-size:clamp(34px,6vw,62px);
+    font-weight:800;
+    letter-spacing:-.035em;
+    line-height:1.02;
+    margin-bottom:18px;
+    color:var(--ink);
+  }
+  h1 .grad{
+    background:linear-gradient(135deg,#3b6cff 0%,#7b5cff 55%,#18b5d6 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+    position:relative;
+    display:inline-block;
+  }
+  .subtitle{
+    font-size:clamp(15px,2.2vw,18px);
+    color:var(--muted);
+    max-width:560px;margin:0 auto;
+    font-weight:500;
+  }
+
+  /* ---------------- SEARCH CARD ---------------- */
+  .search-card{
+    background:#fff;
+    border-radius:var(--r-xl);
+    padding:24px;
+    box-shadow:var(--shadow-lg);
+    border:1px solid rgba(230,235,243,.8);
+    margin-bottom:44px;
+    position:relative;
+  }
+  .search-card::before{
+    content:'';
+    position:absolute;inset:0;
+    border-radius:inherit;
+    padding:1px;
+    background:linear-gradient(135deg,rgba(59,108,255,.35),rgba(123,92,255,.15) 40%,transparent 70%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+            mask-composite:exclude;
+    pointer-events:none;
+  }
+
+  .fields{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  .field{display:flex;flex-direction:column}
+  .field label{
+    font-size:12px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.8px;
+    color:var(--muted);
+    margin-bottom:8px;padding-left:2px;
+  }
+  .field input,
+  .field select{
+    width:100%;
+    padding:15px 16px;
+    border:1.5px solid var(--line-2);
+    border-radius:var(--r-md);
+    font-size:15px;font-weight:600;
+    font-family:inherit;
+    background:#fbfcfe;
+    color:var(--ink);
+    outline:none;
+    transition:all .2s ease;
+    appearance:none;-webkit-appearance:none;
+    min-height:52px;
+  }
+  .field select{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238a94a8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 16px center;
+    padding-right:42px;
+    cursor:pointer;
+  }
+  .field input[type="date"]{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a94a8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 16px center;
+    padding-right:42px;
+    cursor:pointer;
+  }
+  .field input::placeholder{color:#a9b3c4;font-weight:500}
+  .field input:hover,
+  .field select:hover{border-color:#c9d3e3;background:#fff}
+  .field input:focus,
+  .field select:focus{
+    border-color:var(--brand);
+    background:#fff;
+    box-shadow:0 0 0 4px rgba(59,108,255,.12);
+  }
+  .field select::-ms-expand{display:none}
+
+  /* swap button */
+  .swap-btn{
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%) translateY(2px);
+    width:38px;height:38px;border-radius:50%;
+    background:#fff;
+    border:1.5px solid var(--line-2);
+    display:none;
+    align-items:center;justify-content:center;
+    cursor:pointer;
+    color:var(--brand);
+    font-size:16px;
+    z-index:5;
+    transition:all .25s ease;
+    box-shadow:0 6px 14px -4px rgba(16,24,40,.12);
+  }
+  .swap-btn:hover{
+    transform:translate(-50%,-50%) translateY(2px) rotate(180deg);
+    border-color:var(--brand);
+    box-shadow:0 8px 20px -4px rgba(59,108,255,.4);
+  }
+  .search-card{position:relative}
+
+  .search-button{
+    width:100%;
+    margin-top:18px;
+    padding:18px 24px;
+    border:none;
+    border-radius:var(--r-md);
+    background:linear-gradient(135deg,#3b6cff 0%,#7b5cff 100%);
+    color:#fff;
+    font-size:16px;font-weight:700;
+    font-family:inherit;
+    letter-spacing:.2px;
+    cursor:pointer;
+    transition:all .22s ease;
+    box-shadow:0 14px 30px -10px rgba(59,108,255,.55);
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    min-height:56px;
+    position:relative;
+    overflow:hidden;
+  }
+  .search-button::before{
+    content:'';
+    position:absolute;inset:0;
+    background:linear-gradient(135deg,#7b5cff 0%,#3b6cff 100%);
+    opacity:0;transition:opacity .25s;
+  }
+  .search-button>*{position:relative;z-index:1}
+  .search-button:hover{transform:translateY(-2px);box-shadow:0 20px 40px -12px rgba(59,108,255,.65)}
+  .search-button:hover::before{opacity:1}
+  .search-button:active{transform:scale(.99) translateY(0)}
+
+  /* ---------------- LOADER ---------------- */
+  .loader{display:none;text-align:center;padding:60px 20px}
+  .loader.active{display:block;animation:fadeIn .3s ease}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .spinner{
+    width:44px;height:44px;
+    border:3px solid var(--line-2);
+    border-top-color:var(--brand);
+    border-radius:50%;
+    animation:spin .75s linear infinite;
+    margin:0 auto 16px;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ---------------- RESULTS ---------------- */
+  .results{animation:fadeUp .5s ease both}
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(12px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .results-header{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:20px;gap:12px;flex-wrap:wrap;
+  }
+  .results-title{
+    font-family:'Sora',sans-serif;
+    font-size:22px;font-weight:700;
+    letter-spacing:-.02em;
+    display:flex;align-items:center;gap:10px;
+  }
+  .results-title::before{
+    content:'';display:inline-block;
+    width:6px;height:22px;border-radius:3px;
+    background:linear-gradient(180deg,#3b6cff,#7b5cff);
+  }
+  .results-sub{
+    font-size:13px;font-weight:600;
+    color:var(--brand);
+    padding:6px 14px;
+    background:rgba(59,108,255,.08);
+    border:1px solid rgba(59,108,255,.15);
+    border-radius:100px;
+  }
+
+  .ticket-list{display:flex;flex-direction:column;gap:14px}
+
+  .ticket{
+    background:#fff;
+    border:1px solid var(--line);
+    padding:22px 24px;
+    border-radius:var(--r-lg);
+    display:flex;justify-content:space-between;align-items:center;gap:20px;
+    transition:all .28s cubic-bezier(.2,.8,.3,1);
+    position:relative;
+    overflow:hidden;
+    box-shadow:var(--shadow-sm);
+  }
+  .ticket::after{
+    content:'';
+    position:absolute;left:0;top:0;bottom:0;width:4px;
+    background:linear-gradient(180deg,#3b6cff,#7b5cff);
+    transform:scaleY(0);transform-origin:top;
+    transition:transform .35s cubic-bezier(.2,.8,.3,1);
+    border-radius:0 4px 4px 0;
+  }
+  .ticket:hover{
+    border-color:transparent;
+    transform:translateY(-3px);
+    box-shadow:0 24px 48px -20px rgba(59,108,255,.28), 0 8px 20px -8px rgba(16,24,40,.08);
+  }
+  .ticket:hover::after{transform:scaleY(1)}
+
+  .ticket-left{display:flex;flex-direction:column;gap:8px;min-width:0;flex:1}
+  .airline{
+    font-size:16.5px;font-weight:800;
+    color:var(--ink);
+    display:flex;align-items:center;gap:11px;
+    letter-spacing:-.01em;
+  }
+  .airline-logo{
+    width:38px;height:38px;border-radius:11px;
+    background:linear-gradient(135deg,#eef3ff 0%,#f3eeff 100%);
+    border:1px solid #e0e7ff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Sora',sans-serif;
+    font-size:12px;font-weight:800;
+    color:#3b6cff;
+    flex-shrink:0;
+    letter-spacing:-.5px;
+  }
+  .route{
+    color:var(--ink-2);
+    font-size:14px;font-weight:600;
+    display:flex;align-items:center;gap:8px;
+  }
+  .route-arrow{
+    color:var(--brand);font-weight:800;
+    font-size:15px;
+  }
+  .details-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px}
+  .badge{
+    display:inline-flex;align-items:center;gap:5px;
+    padding:4px 11px;border-radius:100px;
+    font-size:11px;font-weight:800;
+    letter-spacing:.4px;text-transform:uppercase;
+  }
+  .badge-direct{background:rgba(18,183,106,.10);color:#0c8a4f;border:1px solid rgba(18,183,106,.20)}
+  .badge-stop{background:rgba(247,144,9,.10);color:#b96f00;border:1px solid rgba(247,144,9,.22)}
+  .time-info{font-size:12.5px;color:var(--muted);font-weight:600}
+
+  .ticket-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0}
+  .price{
+    font-family:'Sora',sans-serif;
+    font-size:28px;font-weight:800;
+    letter-spacing:-.03em;
+    background:linear-gradient(135deg,#0d1526 0%,#3b6cff 130%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+    line-height:1;
+    display:flex;align-items:baseline;gap:2px;
+  }
+  .price-currency{
+    font-size:16px;font-weight:700;
+    color:var(--muted);
+    -webkit-text-fill-color:var(--muted);
+  }
+  .button{
+    display:inline-flex;align-items:center;gap:7px;
+    background:linear-gradient(135deg,#3b6cff 0%,#7b5cff 100%);
+    color:#fff;
+    padding:11px 20px;
+    border-radius:12px;
+    text-decoration:none;
+    font-size:13.5px;font-weight:700;
+    letter-spacing:.1px;
+    transition:all .2s ease;
+    white-space:nowrap;
+    box-shadow:0 8px 20px -8px rgba(59,108,255,.6);
+    min-height:42px;
+  }
+  .button:hover{
+    transform:translateY(-1px);
+    box-shadow:0 14px 28px -10px rgba(59,108,255,.75);
+  }
+  .button:active{transform:scale(.97)}
+
+  /* ---------------- EMPTY ---------------- */
+  .empty{
+    text-align:center;
+    color:var(--muted);
+    padding:64px 24px;
+    background:#fff;
+    border-radius:var(--r-xl);
+    border:1px dashed var(--line-2);
+    font-size:15px;font-weight:500;
+  }
+  .empty-icon{
+    font-size:48px;margin-bottom:14px;display:block;
+    filter:grayscale(.3);
+  }
+
+  /* ---------------- FEATURES ---------------- */
+  .features{
+    margin-top:60px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+  }
+  .feature{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--r-lg);
+    padding:24px;
+    transition:all .25s ease;
+  }
+  .feature:hover{
+    transform:translateY(-3px);
+    box-shadow:0 20px 40px -20px rgba(16,24,40,.15);
+    border-color:transparent;
+  }
+  .feature-icon{
+    width:48px;height:48px;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:22px;margin-bottom:14px;
+    background:linear-gradient(135deg,#eef3ff 0%,#f3eeff 100%);
+    border:1px solid #e0e7ff;
+  }
+  .feature h3{
+    font-size:16px;font-weight:800;
+    margin-bottom:6px;color:var(--ink);
+    letter-spacing:-.01em;
+  }
+  .feature p{
+    font-size:13.5px;color:var(--muted);
+    font-weight:500;line-height:1.55;
+  }
+
+  /* ---------------- FOOTER ---------------- */
+  footer{
+    margin-top:80px;
+    padding:40px 24px 32px;
+    border-top:1px solid var(--line);
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    font-weight:500;
+    position:relative;
+    z-index:1;
+  }
+  .footer-links{
+    display:flex;justify-content:center;gap:22px;
+    flex-wrap:wrap;margin-bottom:14px;
+  }
+  footer a{
+    color:var(--ink-2);text-decoration:none;
+    transition:color .2s;font-weight:600;
+  }
+  footer a:hover{color:var(--brand)}
+
+  /* ---------------- MOBILE ---------------- */
+  @media (max-width:720px){
+    .header-inner{padding:12px 16px}
+    .logo{font-size:18px}
+    .logo-mark{width:36px;height:36px;font-size:18px}
+    .header-cta{display:none}
+
+    .container{padding:0 16px 70px}
+
+    .hero{padding:40px 0 28px}
+    .hero-badge{font-size:12px;padding:6px 13px;margin-bottom:16px}
+    h1{margin-bottom:14px}
+
+    .search-card{padding:18px;border-radius:22px;margin-bottom:32px}
+
+    .fields{grid-template-columns:1fr;gap:12px}
+
+    /* swap только на desktop */
+    .swap-btn{display:none !important}
+
+    .field input,.field select{font-size:16px;min-height:52px}
+
+    .search-button{font-size:15.5px;min-height:54px;margin-top:14px}
+
+    .ticket{
+      flex-direction:column;
+      align-items:stretch;
+      padding:18px;
+      gap:16px;
+      border-radius:18px;
+    }
+    .ticket-right{
+      flex-direction:row;
+      align-items:center;
+      justify-content:space-between;
+      width:100%;
+      border-top:1px solid var(--line);
+      padding-top:16px;
+      gap:12px;
+    }
+    .price{font-size:24px}
+    .button{padding:11px 18px;font-size:13px}
+
+    .results-title{font-size:19px}
+    .results-sub{font-size:12px;padding:5px 12px}
+
+    .features{grid-template-columns:1fr;gap:12px;margin-top:44px}
+    .feature{padding:20px}
+
+    footer{margin-top:56px;padding:32px 16px 24px}
+  }
+
+  @media (max-width:380px){
+    h1{font-size:28px}
+    .ticket-right{flex-direction:column;align-items:stretch}
+    .button{width:100%;justify-content:center}
+    .price{text-align:left}
+  }
+
+  /* показываем swap на широких экранах */
+  @media (min-width:721px){
+    .swap-btn{display:flex}
+    .header-cta{display:inline-flex}
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <div class="logo-mark">✈</div>
+      <div class="logo-text">Небо<span>Дешево</span></div>
+    </a>
+    <div class="header-cta">
+      <span class="dot"></span>
+      Онлайн-поиск работает
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="spark">✨</span>
+      Сравниваем цены среди 700+ авиакомпаний
+    </div>
+    <h1>Летай <span class="grad">дешевле</span><br>по всему миру</h1>
+    <p class="subtitle">
+      Найди лучшие цены на авиабилеты за секунды — без скрытых комиссий и лишних кликов
+    </p>
+  </section>
+
+  <div class="search-card">
+
+    <button class="swap-btn" type="button" onclick="swapCities()" title="Поменять города">⇄</button>
+
+    <div class="fields">
+
+      <div class="field">
+        <label>Откуда</label>
+        <select id="from">
+          <option value="">Выберите город вылета</option>
+          <optgroup label="Дагестан">
+            <option value="MCX">Махачкала (Уйташ) — MCX</option>
+          </optgroup>
+          <optgroup label="Москва">
+            <option value="SVO">Москва (Шереметьево) — SVO</option>
+            <option value="DME">Москва (Домодедово) — DME</option>
+            <option value="VKO">Москва (Внуково) — VKO</option>
+            <option value="ZIA">Москва (Жуковский) — ZIA</option>
+          </optgroup>
+          <optgroup label="Дубай">
+            <option value="DXB">Дубай (Международный) — DXB</option>
+            <option value="DWC">Дубай (Аль-Мактум) — DWC</option>
+          </optgroup>
+          <optgroup label="Таиланд">
+            <option value="BKK">Бангкок (Суварнабхуми) — BKK</option>
+            <option value="DMK">Бангкок (Дон Муанг) — DMK</option>
+            <option value="HKT">Пхукет — HKT</option>
+            <option value="CNX">Чиангмай — CNX</option>
+            <option value="KBV">Краби — KBV</option>
+            <option value="UTP">У-Тапао (Паттайя) — UTP</option>
+          </optgroup>
+          <optgroup label="Популярные">
+            <option value="IST">Стамбул — IST</option>
+            <option value="HEL">Хельсинки — HEL</option>
+            <option value="BER">Берлин — BER</option>
+            <option value="CDG">Париж — CDG</option>
+            <option value="LHR">Лондон — LHR</option>
+            <option value="JFK">Нью-Йорк — JFK</option>
+            <option value="AYT">Анталья — AYT</option>
+            <option value="BCN">Барселона — BCN</option>
+            <option value="FCO">Рим — FCO</option>
+            <option value="AMS">Амстердам — AMS</option>
+            <option value="VIE">Вена — VIE</option>
+            <option value="PRG">Прага — PRG</option>
+            <option value="WAW">Варшава — WAW</option>
+            <option value="ARN">Стокгольм — ARN</option>
+            <option value="OSL">Осло — OSL</option>
+            <option value="CPH">Копенгаген — CPH</option>
+            <option value="HND">Токио (Ханэда) — HND</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Куда</label>
+        <select id="to">
+          <option value="">Выберите город назначения</option>
+          <optgroup label="Дагестан">
+            <option value="MCX">Махачкала (Уйташ) — MCX</option>
+          </optgroup>
+          <optgroup label="Москва">
+            <option value="SVO">Москва (Шереметьево) — SVO</option>
+            <option value="DME">Москва (Домодедово) — DME</option>
+            <option value="VKO">Москва (Внуково) — VKO</option>
+            <option value="ZIA">Москва (Жуковский) — ZIA</option>
+          </optgroup>
+          <optgroup label="Дубай">
+            <option value="DXB">Дубай (Международный) — DXB</option>
+            <option value="DWC">Дубай (Аль-Мактум) — DWC</option>
+          </optgroup>
+          <optgroup label="Таиланд">
+            <option value="BKK">Бангкок (Суварнабхуми) — BKK</option>
+            <option value="DMK">Бангкок (Дон Муанг) — DMK</option>
+            <option value="HKT">Пхукет — HKT</option>
+            <option value="CNX">Чиангмай — CNX</option>
+            <option value="KBV">Краби — KBV</option>
+            <option value="UTP">У-Тапао (Паттайя) — UTP</option>
+          </optgroup>
+          <optgroup label="Популярные">
+            <option value="IST">Стамбул — IST</option>
+            <option value="HEL">Хельсинки — HEL</option>
+            <option value="BER">Берлин — BER</option>
+            <option value="CDG">Париж — CDG</option>
+            <option value="LHR">Лондон — LHR</option>
+            <option value="JFK">Нью-Йорк — JFK</option>
+            <option value="AYT">Анталья — AYT</option>
+            <option value="BCN">Барселона — BCN</option>
+            <option value="FCO">Рим — FCO</option>
+            <option value="AMS">Амстердам — AMS</option>
+            <option value="VIE">Вена — VIE</option>
+            <option value="PRG">Прага — PRG</option>
+            <option value="WAW">Варшава — WAW</option>
+            <option value="ARN">Стокгольм — ARN</option>
+            <option value="OSL">Осло — OSL</option>
+            <option value="CPH">Копенгаген — CPH</option>
+            <option value="HND">Токио (Ханэда) — HND</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Дата вылета</label>
+        <input type="date" id="departure">
+      </div>
+
+      <div class="field">
+        <label>Дата обратно</label>
+        <input type="date" id="return">
+      </div>
+
+    </div>
+
+    <button class="search-button" onclick="searchFlights()">
+      <span>🔍</span>
+      <span>Найти билеты</span>
+    </button>
+
+  </div>
+
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+    <div style="color:var(--muted);font-size:14px;font-weight:600">Ищем лучшие предложения…</div>
+  </div>
+
+  <div class="results" id="results" style="display:none">
+    <div class="results-header">
+      <div class="results-title">Результаты поиска</div>
+      <div class="results-sub" id="resultsSub"></div>
+    </div>
+    <div class="ticket-list" id="tickets"></div>
+    <div class="empty" id="empty" style="display:none">
+      <span class="empty-icon">🔎</span>
+      <div>Введите направление и дату, чтобы увидеть билеты.</div>
+    </div>
+  </div>
+
+  <section class="features">
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <h3>Мгновенный поиск</h3>
+      <p>Сотни авиакомпаний и агентств проверяются за одну секунду</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">💰</div>
+      <h3>Лучшая цена</h3>
+      <p>Мы находим самые дешёвые билеты и показываем без наценок</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🛡️</div>
+      <h3>Безопасно</h3>
+      <p>Переход на проверенные сайты авиакомпаний и агентств</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="#" onclick="event.preventDefault()">О сервисе</a>
+    <a href="#" onclick="event.preventDefault()">Помощь</a>
+    <a href="#" onclick="event.preventDefault()">Контакты</a>
+  </div>
+  <div>© 2026 НебоДешево — находите лучшие цены на авиабилеты</div>
+</footer>
+
+<script>
+  function formatDate(dateStr){
+    if(!dateStr) return '';
+    const [y,m,d]=dateStr.split('-');
+    const months=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+    return `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+  }
+
+  function getAirlineLogo(airline){
+    const map={
+      'Pegasus':'PG','Turkish Airlines':'TK','Finnair':'AY','Aeroflot':'SU',
+      'Lufthansa':'LH','Air France':'AF','KLM':'KL','Emirates':'EK',
+      'British Airways':'BA','Ryanair':'FR','EasyJet':'U2','Wizz Air':'W6',
+      'Победа':'DP','S7':'S7','Rossiya':'FV','Ural Airlines':'U6'
+    };
+    return map[airline] || (airline ? airline.substring(0,2).toUpperCase() : '??');
+  }
+
+  function swapCities(){
+    const from=document.getElementById('from');
+    const to=document.getElementById('to');
+    const tmp=from.value;
+    from.value=to.value;
+    to.value=tmp;
+  }
+
+  async function searchFlights(){
+    const from=document.getElementById('from').value.trim();
+    const to=document.getElementById('to').value.trim();
+    const departure=document.getElementById('departure').value;
+    const returnDate=document.getElementById('return').value;
+
+    if(!from){alert('Пожалуйста, выберите город вылета.');return}
+    if(!to){alert('Пожалуйста, выберите город назначения.');return}
+    if(from===to){alert('Город вылета и город назначения не могут совпадать.');return}
+    if(!departure){alert('Пожалуйста, выберите дату вылета.');return}
+
+    const depDate=new Date(departure);
+    const today=new Date();today.setHours(0,0,0,0);
+    if(depDate<today){alert('Дата вылета не может быть в прошлом.');return}
+    if(returnDate){
+      const retDate=new Date(returnDate);
+      if(retDate<depDate){alert('Дата возвращения не может быть раньше даты вылета.');return}
+    }
+
+    document.getElementById('results').style.display='none';
+    document.getElementById('empty').style.display='none';
+    document.getElementById('loader').classList.add('active');
+
+    // ============================================================
+    // ВАШ ТОКЕН TRAVELPAYOUTS — вставьте сюда
+    // ============================================================
+    const API_TOKEN='YOUR_API_TOKEN';
+
+    const apiUrl=`https://api.travelpayouts.com/aviasales/v3/prices_for_dates?origin=${from}&destination=${to}&departure_at=${departure}&return_at=${returnDate}&currency=rub&token=${API_TOKEN}`;
+
+    try{
+      const response=await fetch(apiUrl);
+      if(!response.ok) throw new Error('API '+response.status);
+      const data=await response.json();
+
+      document.getElementById('loader').classList.remove('active');
+      document.getElementById('results').style.display='block';
+
+      const ticketsContainer=document.getElementById('tickets');
+      const resultsSub=document.getElementById('resultsSub');
+      const emptyBlock=document.getElementById('empty');
+
+      const depF=formatDate(departure);
+      const retF=returnDate?formatDate(returnDate):null;
+      let subText=`${from} → ${to} · ${depF}`;
+      if(retF) subText+=` — ${retF}`;
+      resultsSub.textContent=subText;
+
+      if(!data.data||data.data.length===0){
+        ticketsContainer.innerHTML='';
+        emptyBlock.style.display='block';
+        emptyBlock.innerHTML=`
+          <span class="empty-icon">😔</span>
+          <div>По этому направлению билетов не найдено.<br>Попробуйте изменить даты или города.</div>
+        `;
+        return;
+      }
+
+      let html='';
+      data.data.forEach(t=>{
+        const code=t.airline;
+        const price=t.price;
+        const tr=t.transfers;
+        const fn=t.flight_number;
+        const dep=new Date(t.departure_at).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+
+        const badgeClass=tr===0?'badge-direct':'badge-stop';
+        const badgeText=tr===0?'Прямой':`${tr} перес.`;
+
+        const bookUrl=`https://www.aviasales.ru/search/${from}${departure}${to}${returnDate||''}${tr===0?'':'1'}`;
+
+        html+=`
+          <div class="ticket">
+            <div class="ticket-left">
+              <div class="airline">
+                <span class="airline-logo">${getAirlineLogo(code)}</span>
+                <span>${code} ${fn}</span>
+              </div>
+              <div class="route">
+                ${from} <span class="route-arrow">→</span> ${to}
+              </div>
+              <div class="details-row">
+                <span class="badge ${badgeClass}">${badgeText}</span>
+                <span class="time-info">Вылет в ${dep}</span>
+              </div>
+            </div>
+            <div class="ticket-right">
+              <div class="price">${price}<span class="price-currency">₽</span></div>
+              <a href="${bookUrl}" target="_blank" rel="noopener" class="button">
+                Забронировать →
+              </a>
+            </div>
+          </div>
+        `;
+      });
+
+      ticketsContainer.innerHTML=html;
+      emptyBlock.style.display='none';
+    }
+    catch(err){
+      console.error('Ошибка:',err);
+      document.getElementById('loader').classList.remove('active');
+      document.getElementById('results').style.display='block';
+      const eb=document.getElementById('empty');
+      eb.style.display='block';
+      eb.innerHTML=`
+        <span class="empty-icon">⚠️</span>
+        <div>Не удалось загрузить данные.<br>Проверьте соединение или попробуйте позже.</div>
+      `;
+    }
+  }
+
+  (function initDates(){
+    const today=new Date();
+    const tm=new Date(today);tm.setDate(tm.getDate()+1);
+    const wk=new Date(today);wk.setDate(wk.getDate()+7);
+    const f=d=>{
+      const y=d.getFullYear();
+      const m=String(d.getMonth()+1).padStart(2,'0');
+      const day=String(d.getDate()).padStart(2,'0');
+      return `${y}-${m}-${day}`;
+    };
+    const dep=document.getElementById('departure');
+    const ret=document.getElementById('return');
+    dep.value=f(tm);dep.min=f(today);
+    ret.value=f(wk);ret.min=f(tm);
+    dep.addEventListener('change',function(){
+      if(!this.value) return;
+      const nd=new Date(this.value);nd.setDate(nd.getDate()+1);
+      ret.min=f(nd);
+      if(ret.value&&ret.value<this.value) ret.value=f(nd);
+    });
+  })();
+</script>
+
+</body>
+</html>

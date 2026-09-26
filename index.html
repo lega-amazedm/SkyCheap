@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<meta name="theme-color" content="#0a0e1a">
-<meta name="description" content="НебоДешево — поиск дешёвых авиабилетов по всему миру">
+<meta name="theme-color" content="#08090d">
 <title>НебоДешево — дешёвые авиабилеты</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 
 <!-- ====== DRIVE (EMRld) — установлен по инструкции ====== -->
 <script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1" data-cmp-ab="2">
@@ -25,894 +24,971 @@
 
 <style>
   :root{
-    --bg:#0a0e1a;
-    --bg-2:#0f1424;
-    --surface:#141a2e;
-    --surface-2:#1a2138;
-    --surface-hover:#1f2742;
-    --line:rgba(255,255,255,.08);
-    --line-2:rgba(255,255,255,.12);
-    --text:#eef2fb;
-    --text-2:#b4bdd1;
-    --muted:#6b7689;
-    --brand:#4d7cff;
+    --bg:#08090d;
+    --bg-2:#0d0f15;
+    --panel:rgba(255,255,255,.028);
+    --panel-2:rgba(255,255,255,.045);
+    --line:rgba(255,255,255,.07);
+    --line-2:rgba(255,255,255,.11);
+    --text:#f4f6fa;
+    --text-2:#c4cad6;
+    --muted:#7b8497;
+    --muted-2:#565e72;
+    --brand:#4f7dff;
     --brand-2:#8b5cff;
-    --brand-3:#22d3ee;
+    --accent:#22d3ee;
     --success:#22c55e;
     --warn:#f59e0b;
-    --danger:#ef4444;
+    --radius:18px;
+    --radius-sm:12px;
   }
 
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html{scroll-behavior:smooth}
 
   body{
-    font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
     background:var(--bg);
     color:var(--text);
-    line-height:1.55;
+    line-height:1.5;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     min-height:100vh;
     overflow-x:hidden;
     position:relative;
+    font-feature-settings:"cv02","cv03","cv04","cv11";
   }
 
-  .bg-decor{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    z-index:0;
-    overflow:hidden;
-  }
-  .bg-decor::before,
-  .bg-decor::after{
+  /* ---------- фон ---------- */
+  .bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+
+  .bg::before{
     content:'';
     position:absolute;
-    border-radius:50%;
-    filter:blur(140px);
+    inset:0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -20%,rgba(79,125,255,.22),transparent),
+      radial-gradient(ellipse 60% 50% at 100% 30%,rgba(139,92,255,.14),transparent),
+      radial-gradient(ellipse 60% 50% at 0% 60%,rgba(34,211,238,.10),transparent);
   }
-  .bg-decor::before{
-    width:720px;height:720px;
-    background:radial-gradient(circle,rgba(77,124,255,.35),transparent 65%);
-    top:-300px;left:-280px;
-    animation:float1 22s ease-in-out infinite;
+
+  .bg-noise{
+    position:absolute;
+    inset:0;
+    opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-  .bg-decor::after{
-    width:680px;height:680px;
-    background:radial-gradient(circle,rgba(139,92,255,.32),transparent 65%);
-    bottom:-320px;right:-260px;
-    animation:float2 26s ease-in-out infinite;
-  }
+
   .bg-grid{
     position:absolute;
     inset:0;
     background-image:
-      linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-      linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-    background-size:56px 56px;
-    mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
-    -webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
-  }
-  @keyframes float1{
-    0%,100%{transform:translate(0,0)}
-    50%{transform:translate(80px,60px)}
-  }
-  @keyframes float2{
-    0%,100%{transform:translate(0,0)}
-    50%{transform:translate(-70px,-50px)}
+      linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+    background-size:72px 72px;
+    mask-image:radial-gradient(ellipse 100% 60% at 50% 0%,black,transparent 70%);
+    -webkit-mask-image:radial-gradient(ellipse 100% 60% at 50% 0%,black,transparent 70%);
   }
 
+  /* ---------- header ---------- */
   header{
     position:sticky;top:0;z-index:100;
-    background:rgba(10,14,26,.72);
+    background:rgba(8,9,13,.6);
     backdrop-filter:saturate(180%) blur(20px);
     -webkit-backdrop-filter:saturate(180%) blur(20px);
     border-bottom:1px solid var(--line);
   }
   .header-inner{
-    max-width:1180px;margin:0 auto;
-    padding:14px 24px;
+    max-width:1200px;margin:0 auto;
+    padding:16px 28px;
     display:flex;align-items:center;justify-content:space-between;gap:16px;
   }
   .logo{
-    display:flex;align-items:center;gap:11px;
-    font-family:'Space Grotesk',sans-serif;
-    font-size:20px;font-weight:700;
-    letter-spacing:-.5px;color:var(--text);
-    text-decoration:none;
+    display:flex;align-items:center;gap:10px;
+    font-size:19px;font-weight:700;
+    letter-spacing:-.02em;
+    color:var(--text);text-decoration:none;
   }
   .logo-mark{
-    width:40px;height:40px;border-radius:12px;
-    background:linear-gradient(135deg,#4d7cff 0%,#8b5cff 100%);
+    width:36px;height:36px;border-radius:10px;
+    background:linear-gradient(135deg,#4f7dff,#8b5cff);
     display:flex;align-items:center;justify-content:center;
-    color:#fff;
-    box-shadow:0 10px 24px -8px rgba(77,124,255,.7);
-    flex-shrink:0;
-    transition:transform .4s cubic-bezier(.2,.9,.3,1.4);
+    color:#fff;flex-shrink:0;
+    box-shadow:0 8px 20px -6px rgba(79,125,255,.55);
   }
-  .logo:hover .logo-mark{transform:rotate(-8deg) scale(1.06)}
-  .logo-mark svg{width:22px;height:22px}
-  .logo-text span{
-    background:linear-gradient(135deg,#4d7cff 0%,#8b5cff 100%);
+  .logo-mark svg{width:19px;height:19px}
+  .logo-text b{font-weight:800}
+  .logo-text em{
+    font-style:normal;
+    background:linear-gradient(135deg,#8ba9ff,#b799ff);
     -webkit-background-clip:text;background-clip:text;
     -webkit-text-fill-color:transparent;
   }
-  .header-status{
-    display:none;align-items:center;gap:8px;
-    font-size:12.5px;font-weight:600;color:var(--text-2);
-    padding:8px 14px;border-radius:100px;
-    background:rgba(255,255,255,.04);
-    border:1px solid var(--line);
+  .nav-links{
+    display:flex;align-items:center;gap:28px;
+    font-size:14px;font-weight:500;
   }
-  .header-status .dot{
-    width:7px;height:7px;border-radius:50%;
-    background:var(--success);
-    box-shadow:0 0 10px var(--success);
-    animation:pulse 2s ease-in-out infinite;
+  .nav-links a{
+    color:var(--muted);text-decoration:none;
+    transition:color .2s;
   }
-  @keyframes pulse{
-    0%,100%{opacity:1;transform:scale(1)}
-    50%{opacity:.55;transform:scale(.85)}
+  .nav-links a:hover{color:var(--text)}
+  .nav-cta{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:8px 16px;border-radius:100px;
+    background:rgba(255,255,255,.05);
+    border:1px solid var(--line-2);
+    color:var(--text);font-size:13px;font-weight:600;
+    text-decoration:none;
+    transition:all .2s;
   }
+  .nav-cta:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2)}
 
+  /* ---------- container ---------- */
   .container{
-    max-width:1180px;margin:0 auto;
-    padding:0 24px 100px;
+    max-width:1200px;margin:0 auto;
+    padding:0 28px;
     position:relative;z-index:1;
   }
 
-  .hero{padding:76px 0 48px;text-align:center}
-  .hero-badge{
-    display:inline-flex;align-items:center;gap:9px;
-    padding:8px 16px;
-    background:rgba(77,124,255,.10);
-    border:1px solid rgba(77,124,255,.25);
-    border-radius:100px;
-    font-size:12.5px;font-weight:600;
-    color:#9fb8ff;
-    margin-bottom:24px;
-    backdrop-filter:blur(10px);
+  /* ---------- hero ---------- */
+  .hero{
+    padding:80px 0 56px;
+    text-align:center;
   }
-  .hero-badge svg{width:14px;height:14px}
+
+  .hero-eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px 6px 8px;
+    background:rgba(255,255,255,.04);
+    border:1px solid var(--line-2);
+    border-radius:100px;
+    font-size:12.5px;font-weight:500;
+    color:var(--text-2);
+    margin-bottom:26px;
+  }
+  .hero-eyebrow b{
+    display:inline-flex;align-items:center;gap:5px;
+    padding:3px 9px;border-radius:100px;
+    background:linear-gradient(135deg,#4f7dff,#8b5cff);
+    color:#fff;font-size:11px;font-weight:700;
+    letter-spacing:.02em;
+  }
+  .hero-eyebrow .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 10px var(--accent);
+  }
 
   h1{
-    font-family:'Space Grotesk',sans-serif;
-    font-size:clamp(36px,6.2vw,64px);
+    font-size:clamp(38px,6.5vw,72px);
     font-weight:700;
-    letter-spacing:-.035em;
+    letter-spacing:-.045em;
     line-height:1.02;
-    margin-bottom:20px;
+    margin-bottom:22px;
     color:#fff;
   }
-  h1 .grad{
-    background:linear-gradient(135deg,#4d7cff 0%,#8b5cff 55%,#22d3ee 100%);
+  h1 .serif{
+    font-family:'Instrument Serif',serif;
+    font-style:italic;
+    font-weight:400;
+    letter-spacing:-.02em;
+    background:linear-gradient(135deg,#8ba9ff 0%,#b799ff 50%,#6ee7ff 100%);
     -webkit-background-clip:text;background-clip:text;
     -webkit-text-fill-color:transparent;
-    display:inline-block;
-  }
-  .subtitle{
-    font-size:clamp(15px,2.2vw,17.5px);
-    color:var(--text-2);
-    max-width:580px;margin:0 auto;
-    font-weight:500;
+    padding-right:.06em;
   }
 
+  .hero p{
+    font-size:clamp(15px,2vw,17.5px);
+    color:var(--muted);
+    max-width:600px;
+    margin:0 auto;
+    font-weight:450;
+    line-height:1.55;
+  }
+
+  /* ---------- search card ---------- */
   .search-card{
-    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+    max-width:1000px;
+    margin:0 auto 72px;
+    background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
     border:1px solid var(--line-2);
-    border-radius:26px;
-    padding:26px;
-    box-shadow:0 30px 70px -30px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06);
+    border-radius:24px;
+    padding:10px;
+    box-shadow:
+      0 30px 80px -30px rgba(0,0,0,.9),
+      0 0 0 1px rgba(255,255,255,.03) inset,
+      0 1px 0 rgba(255,255,255,.08) inset;
     backdrop-filter:blur(24px);
     -webkit-backdrop-filter:blur(24px);
-    margin-bottom:48px;
     position:relative;
   }
-  .search-card::before{
-    content:'';
-    position:absolute;top:0;left:20%;right:20%;
-    height:1px;
-    background:linear-gradient(90deg,transparent,rgba(77,124,255,.8),rgba(139,92,255,.6),transparent);
+
+  .search-inner{
+    background:rgba(15,17,24,.7);
+    border-radius:18px;
+    padding:22px;
+    position:relative;
   }
 
   .fields{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    gap:10px;
+    margin-bottom:14px;
   }
-  .field{display:flex;flex-direction:column;position:relative}
-  .field label{
-    font-size:11.5px;font-weight:700;
-    text-transform:uppercase;letter-spacing:.9px;
-    color:var(--muted);
-    margin-bottom:8px;padding-left:2px;
-    display:flex;align-items:center;gap:6px;
-  }
-  .field label svg{width:12px;height:12px;color:var(--brand)}
 
-  .input-wrap{position:relative}
-  .input-icon{
-    position:absolute;
-    left:16px;top:50%;
-    transform:translateY(-50%);
-    width:18px;height:18px;
-    color:var(--muted);
-    pointer-events:none;
-    transition:color .2s;
+  .field{
+    background:rgba(255,255,255,.025);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:12px 14px;
+    transition:all .2s;
+    position:relative;
+    cursor:pointer;
+    min-height:70px;
   }
+  .field:hover{
+    background:rgba(255,255,255,.045);
+    border-color:var(--line-2);
+  }
+  .field:focus-within{
+    background:rgba(79,125,255,.06);
+    border-color:rgba(79,125,255,.5);
+    box-shadow:0 0 0 3px rgba(79,125,255,.12);
+  }
+
+  .field-label{
+    display:flex;align-items:center;gap:5px;
+    font-size:11px;font-weight:600;
+    color:var(--muted-2);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin-bottom:5px;
+    pointer-events:none;
+  }
+  .field-label svg{width:11px;height:11px}
 
   .field input,
   .field select{
     width:100%;
-    padding:15px 16px 15px 46px;
-    border:1.5px solid var(--line-2);
-    border-radius:14px;
-    font-size:15px;font-weight:600;
-    font-family:inherit;
-    background:rgba(255,255,255,.04);
+    background:transparent;
+    border:none;
     color:var(--text);
+    font-size:14.5px;
+    font-weight:600;
+    font-family:inherit;
     outline:none;
-    transition:all .2s ease;
+    padding:0;
+    cursor:pointer;
     appearance:none;-webkit-appearance:none;
-    min-height:54px;
+    letter-spacing:-.01em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
   .field select{
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7689' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat:no-repeat;
-    background-position:right 16px center;
-    padding-right:44px;
-    cursor:pointer;
-  }
-  .field input[type="date"]{
     padding-right:16px;
-    cursor:pointer;
-    color-scheme:dark;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23565e72' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right center;
   }
   .field select option{
-    background:#131a2e;
-    color:#eef2fb;
+    background:#13151c;
+    color:#f4f6fa;
     padding:10px;
+    font-weight:500;
   }
   .field select optgroup{
-    background:#0f1424;
-    color:#6b7689;
+    background:#0d0f15;
+    color:#7b8497;
     font-weight:700;
+    font-style:normal;
   }
-  .field input::placeholder{color:#5a6479;font-weight:500}
-  .field input:hover,
-  .field select:hover{
-    border-color:rgba(255,255,255,.20);
-    background:rgba(255,255,255,.06);
+  .field input[type="date"]{
+    color-scheme:dark;
+    font-size:14.5px;
   }
-  .field input:focus,
-  .field select:focus{
-    border-color:var(--brand);
-    background:rgba(77,124,255,.08);
-    box-shadow:0 0 0 4px rgba(77,124,255,.15);
-  }
-  .field input:focus ~ .input-icon,
-  .field select:focus ~ .input-icon{color:var(--brand)}
-  .field select::-ms-expand{display:none}
+  .field input::placeholder{color:var(--muted-2)}
 
   .swap-btn{
     position:absolute;
-    top:calc(50% + 10px);
+    top:50%;
     left:50%;
     transform:translate(-50%,-50%);
-    width:42px;height:42px;border-radius:50%;
-    background:linear-gradient(135deg,#4d7cff,#8b5cff);
-    border:none;
+    width:36px;height:36px;border-radius:50%;
+    background:linear-gradient(135deg,#4f7dff,#8b5cff);
+    border:3px solid #0f1118;
     display:none;
     align-items:center;justify-content:center;
     cursor:pointer;
     color:#fff;
     z-index:5;
-    transition:all .3s cubic-bezier(.2,.9,.3,1.4);
-    box-shadow:0 8px 24px -6px rgba(77,124,255,.7);
+    transition:transform .35s cubic-bezier(.2,.9,.3,1.4);
+    box-shadow:0 6px 18px -4px rgba(79,125,255,.6);
   }
-  .swap-btn svg{width:18px;height:18px}
-  .swap-btn:hover{transform:translate(-50%,-50%) rotate(180deg) scale(1.1)}
+  .swap-btn svg{width:15px;height:15px}
+  .swap-btn:hover{transform:translate(-50%,-50%) rotate(180deg)}
 
-  .search-button{
+  .search-btn{
     width:100%;
-    margin-top:18px;
-    padding:19px 24px;
+    padding:17px 24px;
     border:none;
     border-radius:14px;
-    background:linear-gradient(135deg,#4d7cff 0%,#8b5cff 100%);
+    background:linear-gradient(135deg,#4f7dff 0%,#8b5cff 100%);
     color:#fff;
-    font-size:16px;font-weight:700;
+    font-size:15.5px;font-weight:700;
     font-family:inherit;
-    letter-spacing:.2px;
+    letter-spacing:-.01em;
     cursor:pointer;
-    transition:all .22s ease;
-    box-shadow:0 16px 40px -12px rgba(77,124,255,.65);
-    display:flex;align-items:center;justify-content:center;gap:10px;
-    min-height:58px;
+    transition:all .2s;
+    box-shadow:
+      0 12px 28px -8px rgba(79,125,255,.5),
+      0 1px 0 rgba(255,255,255,.2) inset;
+    display:flex;align-items:center;justify-content:center;gap:9px;
+    min-height:54px;
+  }
+  .search-btn svg{width:18px;height:18px}
+  .search-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:
+      0 16px 36px -10px rgba(79,125,255,.65),
+      0 1px 0 rgba(255,255,255,.2) inset;
+  }
+  .search-btn:active{transform:translateY(0)}
+
+  /* ---------- popular routes ---------- */
+  .section-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin-bottom:20px;gap:16px;flex-wrap:wrap;
+  }
+  .section-title{
+    font-size:22px;font-weight:700;
+    letter-spacing:-.02em;color:#fff;
+  }
+  .section-title .em{
+    font-family:'Instrument Serif',serif;
+    font-style:italic;
+    font-weight:400;
+    background:linear-gradient(135deg,#8ba9ff,#b799ff);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .section-sub{
+    font-size:13px;color:var(--muted);font-weight:500;
+  }
+
+  .routes{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:72px;
+  }
+  .route-card{
+    background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:16px;
+    cursor:pointer;
+    transition:all .25s cubic-bezier(.2,.8,.3,1);
+    text-decoration:none;
+    display:block;
     position:relative;
     overflow:hidden;
   }
-  .search-button svg{width:20px;height:20px}
-  .search-button::before{
+  .route-card::before{
     content:'';
-    position:absolute;inset:0;
-    background:linear-gradient(135deg,#8b5cff 0%,#4d7cff 100%);
-    opacity:0;transition:opacity .25s;
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 100% 0%,rgba(79,125,255,.15),transparent 60%);
+    opacity:0;
+    transition:opacity .3s;
   }
-  .search-button>*{position:relative;z-index:1}
-  .search-button:hover{transform:translateY(-2px);box-shadow:0 22px 50px -14px rgba(77,124,255,.75)}
-  .search-button:hover::before{opacity:1}
-  .search-button:active{transform:scale(.99)}
+  .route-card:hover{
+    transform:translateY(-3px);
+    border-color:rgba(79,125,255,.35);
+    box-shadow:0 20px 40px -20px rgba(79,125,255,.35);
+  }
+  .route-card:hover::before{opacity:1}
 
-  .loader{display:none;text-align:center;padding:64px 20px}
-  .loader.active{display:block;animation:fadeIn .3s ease}
-  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .route-top{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:14px;
+    position:relative;
+  }
+  .route-flag{
+    font-size:22px;
+    line-height:1;
+    filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));
+  }
+  .route-price{
+    font-size:12px;font-weight:700;
+    padding:4px 9px;
+    background:rgba(34,197,94,.12);
+    color:#4ade80;
+    border-radius:100px;
+    letter-spacing:-.01em;
+  }
+  .route-cities{
+    font-size:14px;font-weight:700;
+    color:#fff;
+    letter-spacing:-.01em;
+    margin-bottom:3px;
+    position:relative;
+  }
+  .route-meta{
+    font-size:12px;color:var(--muted);font-weight:500;
+    position:relative;
+  }
+
+  /* ---------- loader ---------- */
+  .loader{display:none;text-align:center;padding:56px 20px}
+  .loader.active{display:block}
   .spinner{
-    width:48px;height:48px;
-    border:3px solid rgba(255,255,255,.08);
+    width:42px;height:42px;
+    border:2.5px solid rgba(255,255,255,.07);
     border-top-color:var(--brand);
-    border-right-color:var(--brand-2);
     border-radius:50%;
     animation:spin .8s linear infinite;
-    margin:0 auto 18px;
+    margin:0 auto 14px;
   }
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  .results{animation:fadeUp .5s ease both}
-  @keyframes fadeUp{
-    from{opacity:0;transform:translateY(12px)}
-    to{opacity:1;transform:translateY(0)}
-  }
-  .results-header{
-    display:flex;align-items:center;justify-content:space-between;
-    margin-bottom:20px;gap:12px;flex-wrap:wrap;
-  }
-  .results-title{
-    font-family:'Space Grotesk',sans-serif;
-    font-size:22px;font-weight:700;
-    letter-spacing:-.02em;
-    display:flex;align-items:center;gap:11px;
-    color:#fff;
-  }
-  .results-title svg{
-    width:20px;height:20px;
-    color:var(--brand);
-  }
-  .results-sub{
-    font-size:12.5px;font-weight:600;
-    color:#9fb8ff;
-    padding:7px 14px;
-    background:rgba(77,124,255,.12);
-    border:1px solid rgba(77,124,255,.25);
-    border-radius:100px;
-  }
+  /* ---------- results ---------- */
+  .results{margin-bottom:72px;display:none;animation:up .5s cubic-bezier(.2,.8,.3,1) both}
+  .results.active{display:block}
+  @keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-  .ticket-list{display:flex;flex-direction:column;gap:14px}
+  .tickets{display:flex;flex-direction:column;gap:10px}
 
   .ticket{
-    background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
-    border:1px solid var(--line-2);
-    padding:22px 24px;
-    border-radius:20px;
+    background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));
+    border:1px solid var(--line);
+    padding:20px 22px;
+    border-radius:16px;
     display:flex;justify-content:space-between;align-items:center;gap:20px;
-    transition:all .3s cubic-bezier(.2,.8,.3,1);
+    transition:all .25s cubic-bezier(.2,.8,.3,1);
     position:relative;
     overflow:hidden;
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
   }
-  .ticket::after{
+  .ticket::before{
     content:'';
     position:absolute;left:0;top:0;bottom:0;width:3px;
-    background:linear-gradient(180deg,#4d7cff,#8b5cff,#22d3ee);
+    background:linear-gradient(180deg,#4f7dff,#8b5cff,#22d3ee);
     transform:scaleY(0);transform-origin:top;
-    transition:transform .4s cubic-bezier(.2,.8,.3,1);
-    border-radius:0 4px 4px 0;
+    transition:transform .35s cubic-bezier(.2,.8,.3,1);
   }
   .ticket:hover{
-    border-color:rgba(77,124,255,.4);
-    transform:translateY(-3px);
-    box-shadow:0 30px 60px -20px rgba(77,124,255,.35),0 8px 20px -8px rgba(0,0,0,.4);
+    border-color:rgba(79,125,255,.35);
+    transform:translateY(-2px);
+    box-shadow:0 24px 48px -20px rgba(79,125,255,.3);
   }
-  .ticket:hover::after{transform:scaleY(1)}
+  .ticket:hover::before{transform:scaleY(1)}
 
-  .ticket-left{display:flex;flex-direction:column;gap:9px;min-width:0;flex:1}
-  .airline{
-    font-size:16.5px;font-weight:700;
-    color:#fff;
-    display:flex;align-items:center;gap:12px;
+  .ticket-main{display:flex;flex-direction:column;gap:8px;min-width:0;flex:1}
+
+  .ticket-airline{
+    font-size:15px;font-weight:700;color:#fff;
+    display:flex;align-items:center;gap:10px;
     letter-spacing:-.01em;
   }
   .airline-logo{
-    width:42px;height:42px;border-radius:12px;
-    background:linear-gradient(135deg,rgba(77,124,255,.20),rgba(139,92,255,.20));
-    border:1px solid rgba(77,124,255,.30);
+    width:36px;height:36px;border-radius:10px;
+    background:linear-gradient(135deg,rgba(79,125,255,.15),rgba(139,92,255,.15));
+    border:1px solid rgba(79,125,255,.25);
     display:flex;align-items:center;justify-content:center;
-    font-family:'Space Grotesk',sans-serif;
-    font-size:12.5px;font-weight:700;
-    color:#9fb8ff;
+    font-size:11px;font-weight:800;
+    color:#8ba9ff;
     flex-shrink:0;
-    letter-spacing:-.5px;
-    box-shadow:0 4px 12px -4px rgba(77,124,255,.4);
+    letter-spacing:-.02em;
   }
-  .airline-code{color:var(--muted);font-weight:600;font-size:13px;margin-left:2px}
-
-  .route{
-    color:var(--text-2);
-    font-size:14px;font-weight:600;
-    display:flex;align-items:center;gap:10px;
-  }
-  .route svg{
-    width:16px;height:16px;
-    color:var(--brand);
-  }
-  .route-arrow{
-    color:var(--brand);font-weight:800;
-    display:flex;align-items:center;
+  .ticket-flight{
+    color:var(--muted);font-size:12.5px;font-weight:500;
   }
 
-  .details-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px}
-  .badge{
-    display:inline-flex;align-items:center;gap:5px;
-    padding:4px 11px;border-radius:100px;
-    font-size:10.5px;font-weight:800;
-    letter-spacing:.5px;text-transform:uppercase;
+  .ticket-route{
+    color:var(--text-2);font-size:13.5px;font-weight:600;
+    display:flex;align-items:center;gap:8px;
   }
-  .badge svg{width:11px;height:11px}
-  .badge-direct{
-    background:rgba(34,197,94,.15);
-    color:#4ade80;
-    border:1px solid rgba(34,197,94,.28);
-  }
-  .badge-stop{
-    background:rgba(245,158,11,.15);
-    color:#fbbf24;
-    border:1px solid rgba(245,158,11,.28);
-  }
-  .time-info{
-    font-size:12.5px;color:var(--muted);font-weight:600;
-    display:flex;align-items:center;gap:5px;
-  }
-  .time-info svg{width:12px;height:12px}
+  .ticket-route svg{width:14px;height:14px;color:var(--brand);flex-shrink:0}
 
-  .ticket-right{
+  .ticket-tags{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px}
+  .tag{
+    display:inline-flex;align-items:center;gap:4px;
+    padding:3px 9px;border-radius:100px;
+    font-size:10.5px;font-weight:700;
+    letter-spacing:.02em;
+  }
+  .tag svg{width:10px;height:10px}
+  .tag-direct{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
+  .tag-stop{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
+  .tag-time{
+    background:rgba(255,255,255,.04);
+    color:var(--muted);
+    border:1px solid var(--line);
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .tag-time svg{width:10px;height:10px}
+
+  .ticket-side{
     display:flex;flex-direction:column;align-items:flex-end;gap:10px;
     flex-shrink:0;
   }
-  .price{
-    font-family:'Space Grotesk',sans-serif;
-    font-size:30px;font-weight:700;
-    letter-spacing:-.035em;
-    color:#fff;
+  .ticket-price{
+    font-size:28px;font-weight:800;
+    letter-spacing:-.035em;color:#fff;
     line-height:1;
-    display:flex;align-items:baseline;gap:3px;
+    display:flex;align-items:baseline;gap:2px;
   }
-  .price-currency{
-    font-size:16px;font-weight:600;
-    color:var(--muted);
+  .ticket-price small{
+    font-size:15px;font-weight:600;color:var(--muted);
   }
 
-  .button{
-    display:inline-flex;align-items:center;gap:7px;
-    background:linear-gradient(135deg,#4d7cff 0%,#8b5cff 100%);
+  .book-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    background:linear-gradient(135deg,#4f7dff,#8b5cff);
     color:#fff;
-    padding:12px 20px;
-    border-radius:12px;
+    padding:10px 16px;
+    border-radius:10px;
     text-decoration:none;
-    font-size:13.5px;font-weight:700;
-    letter-spacing:.1px;
-    transition:all .2s ease;
+    font-size:13px;font-weight:700;
+    transition:all .2s;
     white-space:nowrap;
-    box-shadow:0 10px 24px -8px rgba(77,124,255,.65);
-    min-height:42px;
+    box-shadow:0 8px 20px -8px rgba(79,125,255,.6);
   }
-  .button svg{width:14px;height:14px;transition:transform .2s}
-  .button:hover{
-    transform:translateY(-1px);
-    box-shadow:0 16px 32px -10px rgba(77,124,255,.8);
-  }
-  .button:hover svg{transform:translateX(3px)}
-  .button:active{transform:scale(.97)}
+  .book-btn svg{width:13px;height:13px;transition:transform .2s}
+  .book-btn:hover{transform:translateY(-1px);box-shadow:0 12px 26px -8px rgba(79,125,255,.75)}
+  .book-btn:hover svg{transform:translateX(3px)}
 
+  /* ---------- empty ---------- */
   .empty{
+    display:none;
     text-align:center;
-    color:var(--text-2);
-    padding:64px 24px;
-    background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));
-    border-radius:24px;
-    border:1px dashed rgba(255,255,255,.14);
-    font-size:15px;font-weight:500;
-  }
-  .empty svg{
-    width:56px;height:56px;
-    margin-bottom:16px;
+    padding:60px 24px;
+    background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.005));
+    border-radius:20px;
+    border:1px dashed rgba(255,255,255,.1);
     color:var(--muted);
-    opacity:.7;
+    font-size:14.5px;font-weight:500;
+  }
+  .empty.active{display:block}
+  .empty svg{
+    width:48px;height:48px;
+    margin-bottom:14px;
+    color:var(--muted-2);
+    opacity:.6;
   }
 
+  /* ---------- features ---------- */
   .features{
-    margin-top:64px;
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:18px;
+    gap:14px;
+    margin-bottom:72px;
   }
   .feature{
-    background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+    background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));
     border:1px solid var(--line);
-    border-radius:20px;
-    padding:26px;
-    transition:all .28s ease;
+    border-radius:18px;
+    padding:24px;
+    transition:all .3s cubic-bezier(.2,.8,.3,1);
     position:relative;
     overflow:hidden;
   }
-  .feature::before{
-    content:'';
-    position:absolute;top:0;left:0;right:0;
-    height:1px;
-    background:linear-gradient(90deg,transparent,rgba(77,124,255,.5),transparent);
-    opacity:0;transition:opacity .3s;
-  }
   .feature:hover{
-    transform:translateY(-4px);
-    border-color:rgba(77,124,255,.3);
-    box-shadow:0 24px 50px -20px rgba(77,124,255,.3);
+    transform:translateY(-3px);
+    border-color:rgba(79,125,255,.3);
+    box-shadow:0 22px 44px -22px rgba(79,125,255,.3);
   }
-  .feature:hover::before{opacity:1}
   .feature-icon{
-    width:52px;height:52px;border-radius:15px;
+    width:44px;height:44px;border-radius:12px;
     display:flex;align-items:center;justify-content:center;
-    margin-bottom:16px;
-    background:linear-gradient(135deg,rgba(77,124,255,.18),rgba(139,92,255,.18));
-    border:1px solid rgba(77,124,255,.28);
-    color:#9fb8ff;
+    margin-bottom:14px;
+    background:linear-gradient(135deg,rgba(79,125,255,.15),rgba(139,92,255,.15));
+    border:1px solid rgba(79,125,255,.22);
+    color:#8ba9ff;
   }
-  .feature-icon svg{width:24px;height:24px}
+  .feature-icon svg{width:20px;height:20px}
   .feature h3{
-    font-size:16px;font-weight:700;
+    font-size:15.5px;font-weight:700;
     margin-bottom:6px;color:#fff;
-    letter-spacing:-.01em;
+    letter-spacing:-.015em;
   }
   .feature p{
     font-size:13.5px;color:var(--muted);
-    font-weight:500;line-height:1.6;
+    font-weight:450;line-height:1.55;
   }
 
+  /* ---------- footer ---------- */
   footer{
-    margin-top:80px;
-    padding:44px 24px 32px;
     border-top:1px solid var(--line);
-    text-align:center;
-    color:var(--muted);
-    font-size:13px;
-    font-weight:500;
-    position:relative;
-    z-index:1;
+    padding:40px 0 40px;
+    position:relative;z-index:1;
+    margin-top:0;
   }
-  .footer-links{
-    display:flex;justify-content:center;gap:24px;
-    flex-wrap:wrap;margin-bottom:16px;
+  .footer-inner{
+    max-width:1200px;margin:0 auto;
+    padding:0 28px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:20px;flex-wrap:wrap;
   }
-  footer a{
-    color:var(--text-2);text-decoration:none;
-    transition:color .2s;font-weight:600;
-  }
-  footer a:hover{color:var(--brand)}
   .footer-brand{
-    display:inline-flex;align-items:center;gap:8px;
-    margin-bottom:10px;
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:700;color:#fff;font-size:15px;
+    display:flex;align-items:center;gap:9px;
+    font-size:14.5px;font-weight:700;
+    color:#fff;letter-spacing:-.01em;
   }
-  .footer-brand svg{width:16px;height:16px;color:var(--brand)}
+  .footer-brand .logo-mark{width:28px;height:28px;border-radius:8px}
+  .footer-brand .logo-mark svg{width:14px;height:14px}
+  .footer-links{display:flex;gap:24px;flex-wrap:wrap}
+  .footer-links a{
+    color:var(--muted);text-decoration:none;
+    font-size:13.5px;font-weight:500;
+    transition:color .2s;
+  }
+  .footer-links a:hover{color:var(--text)}
+  .footer-copy{
+    width:100%;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    color:var(--muted-2);
+    font-size:12.5px;
+    text-align:center;
+    font-weight:450;
+  }
 
-  @media (max-width:760px){
+  /* ---------- responsive ---------- */
+  @media (max-width:960px){
+    .fields{grid-template-columns:1fr 1fr}
+    .swap-btn{display:none}
+    .routes{grid-template-columns:repeat(2,1fr)}
+  }
+
+  @media (max-width:768px){
     .header-inner{padding:12px 16px}
-    .logo{font-size:18px}
-    .logo-mark{width:36px;height:36px}
-    .logo-mark svg{width:20px;height:20px}
-    .header-status{display:none}
+    .nav-links{display:none}
+    .container{padding:0 16px}
 
-    .container{padding:0 16px 70px}
+    .hero{padding:48px 0 32px}
+    h1{margin-bottom:16px}
 
-    .hero{padding:44px 0 32px}
-    .hero-badge{font-size:11.5px;padding:6px 13px;margin-bottom:18px}
+    .search-card{padding:8px;border-radius:20px;margin-bottom:48px}
+    .search-inner{padding:14px;border-radius:14px}
 
-    .search-card{padding:18px;border-radius:22px;margin-bottom:34px}
+    .fields{grid-template-columns:1fr;gap:8px;margin-bottom:10px}
 
-    .fields{grid-template-columns:1fr;gap:12px}
+    .field{padding:12px 14px;min-height:64px}
+    .field input,
+    .field select{font-size:16px}
 
-    .swap-btn{display:none !important}
+    .search-btn{min-height:52px;font-size:15px}
 
-    .field input,.field select{font-size:16px;min-height:54px}
+    .routes{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:48px}
+    .route-card{padding:14px}
+    .route-flag{font-size:20px}
+    .route-cities{font-size:13.5px}
 
-    .search-button{font-size:15.5px;min-height:56px;margin-top:14px}
+    .section-title{font-size:19px}
 
     .ticket{
       flex-direction:column;
       align-items:stretch;
-      padding:18px;
-      gap:16px;
-      border-radius:18px;
+      padding:16px;
+      gap:14px;
     }
-    .ticket-right{
+    .ticket-side{
       flex-direction:row;
       align-items:center;
       justify-content:space-between;
       width:100%;
       border-top:1px solid var(--line);
-      padding-top:16px;
-      gap:12px;
+      padding-top:14px;
+      gap:10px;
     }
-    .price{font-size:26px}
-    .button{padding:12px 20px;font-size:13px}
+    .ticket-price{font-size:24px}
 
-    .results-title{font-size:19px}
-    .results-sub{font-size:12px;padding:6px 12px}
+    .features{grid-template-columns:1fr;gap:10px;margin-bottom:48px}
+    .feature{padding:20px}
 
-    .features{grid-template-columns:1fr;gap:12px;margin-top:48px}
-    .feature{padding:22px}
-
-    footer{margin-top:60px;padding:32px 16px 24px}
+    .footer-inner{padding:0 16px;flex-direction:column;align-items:flex-start;gap:16px}
+    .footer-links{gap:18px}
   }
 
   @media (max-width:380px){
-    h1{font-size:30px}
-    .ticket-right{flex-direction:column;align-items:stretch}
-    .button{width:100%;justify-content:center}
-    .price{text-align:left}
-  }
-
-  @media (min-width:761px){
-    .swap-btn{display:flex}
-    .header-status{display:inline-flex}
+    .routes{grid-template-columns:1fr}
+    .ticket-side{flex-direction:column;align-items:stretch}
+    .book-btn{justify-content:center;width:100%}
   }
 </style>
 </head>
 
 <body>
 
-<div class="bg-decor">
+<div class="bg">
   <div class="bg-grid"></div>
+  <div class="bg-noise"></div>
 </div>
 
 <header>
   <div class="header-inner">
     <a href="/" class="logo">
       <div class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
         </svg>
       </div>
-      <div class="logo-text">Небо<span>Дешево</span></div>
+      <div class="logo-text">Небо<em>Дешево</em></div>
     </a>
-    <div class="header-status">
-      <span class="dot"></span>
-      Поиск работает
-    </div>
+    <nav class="nav-links">
+      <a href="#routes">Направления</a>
+      <a href="#features">Почему мы</a>
+      <a href="#" onclick="event.preventDefault()">Помощь</a>
+    </nav>
+    <a href="#search" class="nav-cta">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      Найти билет
+    </a>
   </div>
 </header>
 
-<div class="container">
+<main class="container">
 
   <section class="hero">
-    <div class="hero-badge">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-      </svg>
-      Мгновенный поиск по 700+ авиакомпаниям
+    <div class="hero-eyebrow">
+      <b><span class="dot"></span>Live</b>
+      Поиск по 700+ авиакомпаниям
     </div>
-    <h1>Летай <span class="grad">дешевле</span><br>по всему миру</h1>
-    <p class="subtitle">
-      Найди лучшие цены на авиабилеты за секунды — без скрытых комиссий и лишних кликов
+    <h1>
+      Дешёвые билеты,<br>
+      <span class="serif">без лишних хлопот</span>
+    </h1>
+    <p>
+      Сравниваем предложения всех крупных авиакомпаний и агентств — находим лучшую цену за секунды
     </p>
   </section>
 
-  <div class="search-card">
+  <section class="search-card" id="search">
+    <div class="search-inner">
 
-    <button class="swap-btn" type="button" onclick="swapCities()" title="Поменять города" aria-label="Поменять города">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="17 1 21 5 17 9"/>
-        <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
-        <polyline points="7 23 3 19 7 15"/>
-        <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
-      </svg>
-    </button>
+      <button class="swap-btn" type="button" onclick="swapCities()" aria-label="Поменять города" title="Поменять города">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="17 1 21 5 17 9"/>
+          <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+          <polyline points="7 23 3 19 7 15"/>
+          <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+        </svg>
+      </button>
 
-    <div class="fields">
+      <div class="fields">
 
-      <div class="field">
-        <label>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-            <circle cx="12" cy="10" r="3"/>
-          </svg>
-          Откуда
-        </label>
-        <div class="input-wrap">
-          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
-          </svg>
+        <div class="field">
+          <div class="field-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+            </svg>
+            Откуда
+          </div>
           <select id="from">
-            <option value="">Выберите город вылета</option>
+            <option value="">Выбрать город</option>
             <optgroup label="Дагестан">
-              <option value="MCX">Махачкала (Уйташ) — MCX</option>
+              <option value="MCX">Махачкала · MCX</option>
             </optgroup>
             <optgroup label="Москва">
-              <option value="SVO">Москва (Шереметьево) — SVO</option>
-              <option value="DME">Москва (Домодедово) — DME</option>
-              <option value="VKO">Москва (Внуково) — VKO</option>
-              <option value="ZIA">Москва (Жуковский) — ZIA</option>
+              <option value="SVO">Шереметьево · SVO</option>
+              <option value="DME">Домодедово · DME</option>
+              <option value="VKO">Внуково · VKO</option>
+              <option value="ZIA">Жуковский · ZIA</option>
             </optgroup>
             <optgroup label="Дубай">
-              <option value="DXB">Дубай (Международный) — DXB</option>
-              <option value="DWC">Дубай (Аль-Мактум) — DWC</option>
+              <option value="DXB">Дубай · DXB</option>
+              <option value="DWC">Аль-Мактум · DWC</option>
             </optgroup>
             <optgroup label="Таиланд">
-              <option value="BKK">Бангкок (Суварнабхуми) — BKK</option>
-              <option value="DMK">Бангкок (Дон Муанг) — DMK</option>
-              <option value="HKT">Пхукет — HKT</option>
-              <option value="CNX">Чиангмай — CNX</option>
-              <option value="KBV">Краби — KBV</option>
-              <option value="UTP">У-Тапао (Паттайя) — UTP</option>
+              <option value="BKK">Бангкок · BKK</option>
+              <option value="DMK">Дон Муанг · DMK</option>
+              <option value="HKT">Пхукет · HKT</option>
+              <option value="CNX">Чиангмай · CNX</option>
+              <option value="KBV">Краби · KBV</option>
+              <option value="UTP">Паттайя · UTP</option>
             </optgroup>
             <optgroup label="Популярные">
-              <option value="IST">Стамбул — IST</option>
-              <option value="HEL">Хельсинки — HEL</option>
-              <option value="BER">Берлин — BER</option>
-              <option value="CDG">Париж — CDG</option>
-              <option value="LHR">Лондон — LHR</option>
-              <option value="JFK">Нью-Йорк — JFK</option>
-              <option value="AYT">Анталья — AYT</option>
-              <option value="BCN">Барселона — BCN</option>
-              <option value="FCO">Рим — FCO</option>
-              <option value="AMS">Амстердам — AMS</option>
-              <option value="VIE">Вена — VIE</option>
-              <option value="PRG">Прага — PRG</option>
-              <option value="WAW">Варшава — WAW</option>
-              <option value="ARN">Стокгольм — ARN</option>
-              <option value="OSL">Осло — OSL</option>
-              <option value="CPH">Копенгаген — CPH</option>
-              <option value="HND">Токио (Ханэда) — HND</option>
+              <option value="IST">Стамбул · IST</option>
+              <option value="HEL">Хельсинки · HEL</option>
+              <option value="BER">Берлин · BER</option>
+              <option value="CDG">Париж · CDG</option>
+              <option value="LHR">Лондон · LHR</option>
+              <option value="JFK">Нью-Йорк · JFK</option>
+              <option value="AYT">Анталья · AYT</option>
+              <option value="BCN">Барселона · BCN</option>
+              <option value="FCO">Рим · FCO</option>
+              <option value="AMS">Амстердам · AMS</option>
+              <option value="VIE">Вена · VIE</option>
+              <option value="PRG">Прага · PRG</option>
+              <option value="WAW">Варшава · WAW</option>
+              <option value="ARN">Стокгольм · ARN</option>
+              <option value="OSL">Осло · OSL</option>
+              <option value="CPH">Копенгаген · CPH</option>
+              <option value="HND">Токио · HND</option>
             </optgroup>
           </select>
         </div>
-      </div>
 
-      <div class="field">
-        <label>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-            <circle cx="12" cy="10" r="3"/>
-          </svg>
-          Куда
-        </label>
-        <div class="input-wrap">
-          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
-          </svg>
+        <div class="field">
+          <div class="field-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            Куда
+          </div>
           <select id="to">
-            <option value="">Выберите город назначения</option>
+            <option value="">Выбрать город</option>
             <optgroup label="Дагестан">
-              <option value="MCX">Махачкала (Уйташ) — MCX</option>
+              <option value="MCX">Махачкала · MCX</option>
             </optgroup>
             <optgroup label="Москва">
-              <option value="SVO">Москва (Шереметьево) — SVO</option>
-              <option value="DME">Москва (Домодедово) — DME</option>
-              <option value="VKO">Москва (Внуково) — VKO</option>
-              <option value="ZIA">Москва (Жуковский) — ZIA</option>
+              <option value="SVO">Шереметьево · SVO</option>
+              <option value="DME">Домодедово · DME</option>
+              <option value="VKO">Внуково · VKO</option>
+              <option value="ZIA">Жуковский · ZIA</option>
             </optgroup>
             <optgroup label="Дубай">
-              <option value="DXB">Дубай (Международный) — DXB</option>
-              <option value="DWC">Дубай (Аль-Мактум) — DWC</option>
+              <option value="DXB">Дубай · DXB</option>
+              <option value="DWC">Аль-Мактум · DWC</option>
             </optgroup>
             <optgroup label="Таиланд">
-              <option value="BKK">Бангкок (Суварнабхуми) — BKK</option>
-              <option value="DMK">Бангкок (Дон Муанг) — DMK</option>
-              <option value="HKT">Пхукет — HKT</option>
-              <option value="CNX">Чиангмай — CNX</option>
-              <option value="KBV">Краби — KBV</option>
-              <option value="UTP">У-Тапао (Паттайя) — UTP</option>
+              <option value="BKK">Бангкок · BKK</option>
+              <option value="DMK">Дон Муанг · DMK</option>
+              <option value="HKT">Пхукет · HKT</option>
+              <option value="CNX">Чиангмай · CNX</option>
+              <option value="KBV">Краби · KBV</option>
+              <option value="UTP">Паттайя · UTP</option>
             </optgroup>
             <optgroup label="Популярные">
-              <option value="IST">Стамбул — IST</option>
-              <option value="HEL">Хельсинки — HEL</option>
-              <option value="BER">Берлин — BER</option>
-              <option value="CDG">Париж — CDG</option>
-              <option value="LHR">Лондон — LHR</option>
-              <option value="JFK">Нью-Йорк — JFK</option>
-              <option value="AYT">Анталья — AYT</option>
-              <option value="BCN">Барселона — BCN</option>
-              <option value="FCO">Рим — FCO</option>
-              <option value="AMS">Амстердам — AMS</option>
-              <option value="VIE">Вена — VIE</option>
-              <option value="PRG">Прага — PRG</option>
-              <option value="WAW">Варшава — WAW</option>
-              <option value="ARN">Стокгольм — ARN</option>
-              <option value="OSL">Осло — OSL</option>
-              <option value="CPH">Копенгаген — CPH</option>
-              <option value="HND">Токио (Ханэда) — HND</option>
+              <option value="IST">Стамбул · IST</option>
+              <option value="HEL">Хельсинки · HEL</option>
+              <option value="BER">Берлин · BER</option>
+              <option value="CDG">Париж · CDG</option>
+              <option value="LHR">Лондон · LHR</option>
+              <option value="JFK">Нью-Йорк · JFK</option>
+              <option value="AYT">Анталья · AYT</option>
+              <option value="BCN">Барселона · BCN</option>
+              <option value="FCO">Рим · FCO</option>
+              <option value="AMS">Амстердам · AMS</option>
+              <option value="VIE">Вена · VIE</option>
+              <option value="PRG">Прага · PRG</option>
+              <option value="WAW">Варшава · WAW</option>
+              <option value="ARN">Стокгольм · ARN</option>
+              <option value="OSL">Осло · OSL</option>
+              <option value="CPH">Копенгаген · CPH</option>
+              <option value="HND">Токио · HND</option>
             </optgroup>
           </select>
         </div>
-      </div>
 
-      <div class="field">
-        <label>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/>
-            <line x1="3" y1="10" x2="21" y2="10"/>
-          </svg>
-          Дата вылета
-        </label>
-        <div class="input-wrap">
-          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 2 11 13"/>
-            <path d="M22 2l-7 20-4-9-9-4 20-7z"/>
-          </svg>
+        <div class="field">
+          <div class="field-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 2 11 13"/>
+              <path d="M22 2l-7 20-4-9-9-4 20-7z"/>
+            </svg>
+            Туда
+          </div>
           <input type="date" id="departure">
         </div>
-      </div>
 
-      <div class="field">
-        <label>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/>
-            <line x1="3" y1="10" x2="21" y2="10"/>
-          </svg>
-          Дата обратно
-        </label>
-        <div class="input-wrap">
-          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2 22 13 11"/>
-            <path d="M2 22l7-20 4 9 9 4-20 7z"/>
-          </svg>
+        <div class="field">
+          <div class="field-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 22 13 11"/>
+              <path d="M2 22l7-20 4 9 9 4-20 7z"/>
+            </svg>
+            Обратно
+          </div>
           <input type="date" id="return">
         </div>
+
       </div>
 
+      <button class="search-btn" onclick="searchFlights()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        Найти билеты
+      </button>
+
+    </div>
+  </section>
+
+  <section id="routes">
+    <div class="section-head">
+      <div class="section-title">Популярные <span class="em">направления</span></div>
+      <div class="section-sub">Обновляются в реальном времени</div>
     </div>
 
-    <button class="search-button" onclick="searchFlights()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <span>Найти билеты</span>
-    </button>
+    <div class="routes">
+      <div class="route-card" onclick="quickSearch('MCX','SVO')">
+        <div class="route-top">
+          <div class="route-flag">🇷🇺</div>
+          <div class="route-price">от 2 890 ₽</div>
+        </div>
+        <div class="route-cities">Махачкала → Москва</div>
+        <div class="route-meta">2ч 50м · ежедневно</div>
+      </div>
 
-  </div>
+      <div class="route-card" onclick="quickSearch('SVO','DXB')">
+        <div class="route-top">
+          <div class="route-flag">🇦🇪</div>
+          <div class="route-price">от 18 400 ₽</div>
+        </div>
+        <div class="route-cities">Москва → Дубай</div>
+        <div class="route-meta">5ч 20м · ежедневно</div>
+      </div>
+
+      <div class="route-card" onclick="quickSearch('SVO','BKK')">
+        <div class="route-top">
+          <div class="route-flag">🇹🇭</div>
+          <div class="route-price">от 32 100 ₽</div>
+        </div>
+        <div class="route-cities">Москва → Бангкок</div>
+        <div class="route-meta">9ч 30м · ежедневно</div>
+      </div>
+
+      <div class="route-card" onclick="quickSearch('MCX','IST')">
+        <div class="route-top">
+          <div class="route-flag">🇹🇷</div>
+          <div class="route-price">от 11 700 ₽</div>
+        </div>
+        <div class="route-cities">Махачкала → Стамбул</div>
+        <div class="route-meta">3ч 15м · 4 рейса в день</div>
+      </div>
+    </div>
+  </section>
 
   <div class="loader" id="loader">
     <div class="spinner"></div>
-    <div style="color:var(--text-2);font-size:14px;font-weight:600">Ищем лучшие предложения…</div>
+    <div style="color:var(--muted);font-size:13.5px;font-weight:500">Ищем лучшие предложения…</div>
   </div>
 
-  <div class="results" id="results" style="display:none">
-    <div class="results-header">
-      <div class="results-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-        </svg>
-        Результаты поиска
-      </div>
-      <div class="results-sub" id="resultsSub"></div>
+  <section class="results" id="results">
+    <div class="section-head">
+      <div class="section-title">Результаты <span class="em" id="resultsSub"></span></div>
     </div>
-    <div class="ticket-list" id="tickets"></div>
-    <div class="empty" id="empty" style="display:none">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <div>Введите направление и дату, чтобы увидеть билеты.</div>
-    </div>
+    <div class="tickets" id="tickets"></div>
+  </section>
+
+  <div class="empty" id="empty">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <div>Выберите города и дату, чтобы увидеть билеты</div>
   </div>
 
-  <section class="features">
+  <section class="features" id="features">
     <div class="feature">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -930,7 +1006,7 @@
         </svg>
       </div>
       <h3>Лучшая цена</h3>
-      <p>Находим самые дешёвые билеты и показываем без наценок</p>
+      <p>Показываем самые дешёвые билеты без скрытых наценок</p>
     </div>
     <div class="feature">
       <div class="feature-icon">
@@ -944,47 +1020,60 @@
     </div>
   </section>
 
-</div>
+</main>
 
 <footer>
-  <div class="footer-brand">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
-    </svg>
-    НебоДешево
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+        </svg>
+      </div>
+      НебоДешево
+    </div>
+    <nav class="footer-links">
+      <a href="#" onclick="event.preventDefault()">О сервисе</a>
+      <a href="#" onclick="event.preventDefault()">Помощь</a>
+      <a href="#" onclick="event.preventDefault()">Контакты</a>
+    </nav>
+    <div class="footer-copy">© 2026 НебоДешево — находите лучшие цены на авиабилеты</div>
   </div>
-  <div class="footer-links">
-    <a href="#" onclick="event.preventDefault()">О сервисе</a>
-    <a href="#" onclick="event.preventDefault()">Помощь</a>
-    <a href="#" onclick="event.preventDefault()">Контакты</a>
-  </div>
-  <div>© 2026 НебоДешево — находите лучшие цены на авиабилеты</div>
 </footer>
 
 <script>
-  function formatDate(dateStr){
-    if(!dateStr) return '';
-    const [y,m,d]=dateStr.split('-');
-    const months=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
-    return `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+  const API_TOKEN='YOUR_API_TOKEN';
+
+  function fmtDate(s){
+    if(!s) return '';
+    const [y,m,d]=s.split('-');
+    const mo=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+    return `${parseInt(d)} ${mo[parseInt(m)-1]}`;
   }
 
-  function getAirlineLogo(airline){
+  function airlineCode(name){
     const map={
       'Pegasus':'PG','Turkish Airlines':'TK','Finnair':'AY','Aeroflot':'SU',
       'Lufthansa':'LH','Air France':'AF','KLM':'KL','Emirates':'EK',
       'British Airways':'BA','Ryanair':'FR','EasyJet':'U2','Wizz Air':'W6',
       'Победа':'DP','S7':'S7','Rossiya':'FV','Ural Airlines':'U6'
     };
-    return map[airline] || (airline ? airline.substring(0,2).toUpperCase() : '??');
+    return map[name] || (name ? name.substring(0,2).toUpperCase() : '??');
   }
 
   function swapCities(){
-    const from=document.getElementById('from');
-    const to=document.getElementById('to');
-    const tmp=from.value;
-    from.value=to.value;
-    to.value=tmp;
+    const f=document.getElementById('from');
+    const t=document.getElementById('to');
+    const x=f.value;
+    f.value=t.value;
+    t.value=x;
+  }
+
+  function quickSearch(from, to){
+    document.getElementById('from').value = from;
+    document.getElementById('to').value = to;
+    document.getElementById('search').scrollIntoView({behavior:'smooth', block:'center'});
+    setTimeout(searchFlights, 400);
   }
 
   async function searchFlights(){
@@ -993,60 +1082,46 @@
     const departure=document.getElementById('departure').value;
     const returnDate=document.getElementById('return').value;
 
-    if(!from){alert('Пожалуйста, выберите город вылета.');return}
-    if(!to){alert('Пожалуйста, выберите город назначения.');return}
-    if(from===to){alert('Город вылета и город назначения не могут совпадать.');return}
-    if(!departure){alert('Пожалуйста, выберите дату вылета.');return}
+    if(!from){alert('Выберите город вылета');return}
+    if(!to){alert('Выберите город назначения');return}
+    if(from===to){alert('Города не должны совпадать');return}
+    if(!departure){alert('Выберите дату вылета');return}
 
     const depDate=new Date(departure);
     const today=new Date();today.setHours(0,0,0,0);
-    if(depDate<today){alert('Дата вылета не может быть в прошлом.');return}
+    if(depDate<today){alert('Дата вылета в прошлом');return}
     if(returnDate){
       const retDate=new Date(returnDate);
-      if(retDate<depDate){alert('Дата возвращения не может быть раньше даты вылета.');return}
+      if(retDate<depDate){alert('Дата возвращения раньше вылета');return}
     }
 
-    document.getElementById('results').style.display='none';
-    document.getElementById('empty').style.display='none';
+    document.getElementById('results').classList.remove('active');
+    document.getElementById('empty').classList.remove('active');
     document.getElementById('loader').classList.add('active');
 
-    // ============================================================
-    // ВАШ ТОКЕН TRAVELPAYOUTS — вставьте сюда
-    // Получить: https://www.travelpayouts.com/
-    // ============================================================
-    const API_TOKEN='YOUR_API_TOKEN';
-
-    const apiUrl=`https://api.travelpayouts.com/aviasales/v3/prices_for_dates?origin=${from}&destination=${to}&departure_at=${departure}&return_at=${returnDate}&currency=rub&token=${API_TOKEN}`;
+    const url=`https://api.travelpayouts.com/aviasales/v3/prices_for_dates?origin=${from}&destination=${to}&departure_at=${departure}&return_at=${returnDate}&currency=rub&token=${API_TOKEN}`;
 
     try{
-      const response=await fetch(apiUrl);
-      if(!response.ok) throw new Error('API '+response.status);
-      const data=await response.json();
+      const res=await fetch(url);
+      if(!res.ok) throw new Error('API '+res.status);
+      const data=await res.json();
 
       document.getElementById('loader').classList.remove('active');
-      document.getElementById('results').style.display='block';
 
-      const ticketsContainer=document.getElementById('tickets');
-      const resultsSub=document.getElementById('resultsSub');
-      const emptyBlock=document.getElementById('empty');
-
-      const depF=formatDate(departure);
-      const retF=returnDate?formatDate(returnDate):null;
-      let subText=`${from} → ${to} · ${depF}`;
-      if(retF) subText+=` — ${retF}`;
-      resultsSub.textContent=subText;
+      const ticketsBox=document.getElementById('tickets');
+      const sub=document.getElementById('resultsSub');
+      sub.textContent=`· ${from} → ${to} · ${fmtDate(departure)}`;
 
       if(!data.data||data.data.length===0){
-        ticketsContainer.innerHTML='';
-        emptyBlock.style.display='block';
-        emptyBlock.innerHTML=`
+        ticketsBox.innerHTML='';
+        const e=document.getElementById('empty');
+        e.classList.add('active');
+        e.innerHTML=`
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M8 15s1.5-2 4-2 4 2 4 2"/>
-            <line x1="9" y1="9" x2="9.01" y2="9"/>
-            <line x1="15" y1="9" x2="15.01" y2="9"/>
+            <circle cx="12" cy="12" r="10"/><path d="M8 15s1.5-2 4-2 4 2 4 2"/>
+            <line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>
           </svg>
-          <div>По этому направлению билетов не найдено.<br>Попробуйте изменить даты или города.</div>
+          <div>Билетов не найдено. Попробуйте другие даты или города.</div>
         `;
         return;
       }
@@ -1057,51 +1132,47 @@
         const price=t.price;
         const tr=t.transfers;
         const fn=t.flight_number;
-        const dep=new Date(t.departure_at).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+        const depTime=new Date(t.departure_at).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
 
-        const badgeClass=tr===0?'badge-direct':'badge-stop';
-        const badgeText=tr===0?'Прямой':`${tr} перес.`;
-        const badgeIcon=tr===0
-          ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
-          : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+        const isDirect=tr===0;
+        const tagClass=isDirect?'tag-direct':'tag-stop';
+        const tagText=isDirect?'Прямой':`${tr} пересадка`;
+        const tagIcon=isDirect
+          ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+          : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
 
-        const bookUrl=`https://www.aviasales.ru/search/${from}${departure}${to}${returnDate||''}${tr===0?'':'1'}`;
+        const bookUrl=`https://www.aviasales.ru/search/${from}${departure}${to}${returnDate||''}${isDirect?'':'1'}`;
 
         html+=`
           <div class="ticket">
-            <div class="ticket-left">
-              <div class="airline">
-                <span class="airline-logo">${getAirlineLogo(code)}</span>
-                <span>${code}<span class="airline-code">· ${fn}</span></span>
+            <div class="ticket-main">
+              <div class="ticket-airline">
+                <span class="airline-logo">${airlineCode(code)}</span>
+                <span>${code} <span class="ticket-flight">· ${fn}</span></span>
               </div>
-              <div class="route">
+              <div class="ticket-route">
                 ${from}
-                <span class="route-arrow">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                    <polyline points="12 5 19 12 12 19"/>
-                  </svg>
-                </span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
                 ${to}
               </div>
-              <div class="details-row">
-                <span class="badge ${badgeClass}">${badgeIcon}${badgeText}</span>
-                <span class="time-info">
+              <div class="ticket-tags">
+                <span class="tag ${tagClass}">${tagIcon}${tagText}</span>
+                <span class="tag tag-time">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
+                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
                   </svg>
-                  Вылет в ${dep}
+                  Вылет ${depTime}
                 </span>
               </div>
             </div>
-            <div class="ticket-right">
-              <div class="price">${price}<span class="price-currency">₽</span></div>
-              <a href="${bookUrl}" target="_blank" rel="noopener" class="button">
+            <div class="ticket-side">
+              <div class="ticket-price">${price}<small>₽</small></div>
+              <a href="${bookUrl}" target="_blank" rel="noopener" class="book-btn">
                 Забронировать
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"/>
-                  <polyline points="12 5 19 12 12 19"/>
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
                 </svg>
               </a>
             </div>
@@ -1109,45 +1180,41 @@
         `;
       });
 
-      ticketsContainer.innerHTML=html;
-      emptyBlock.style.display='none';
-    }
-    catch(err){
-      console.error('Ошибка:',err);
+      ticketsBox.innerHTML=html;
+      document.getElementById('results').classList.add('active');
+      document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+
+    }catch(err){
+      console.error(err);
       document.getElementById('loader').classList.remove('active');
-      document.getElementById('results').style.display='block';
-      const eb=document.getElementById('empty');
-      eb.style.display='block';
-      eb.innerHTML=`
+      const e=document.getElementById('empty');
+      e.classList.add('active');
+      e.innerHTML=`
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-          <line x1="12" y1="9" x2="12" y2="13"/>
-          <line x1="12" y1="17" x2="12.01" y2="17"/>
+          <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
         </svg>
-        <div>Не удалось загрузить данные.<br>Проверьте соединение или попробуйте позже.</div>
+        <div>Не удалось загрузить данные.<br>Проверьте соединение или добавьте API-токен.</div>
       `;
     }
   }
 
-  (function initDates(){
+  (function init(){
     const today=new Date();
-    const tm=new Date(today);tm.setDate(tm.getDate()+1);
-    const wk=new Date(today);wk.setDate(wk.getDate()+7);
-    const f=d=>{
-      const y=d.getFullYear();
-      const m=String(d.getMonth()+1).padStart(2,'0');
-      const day=String(d.getDate()).padStart(2,'0');
-      return `${y}-${m}-${day}`;
-    };
+    const tm=new Date(today); tm.setDate(tm.getDate()+1);
+    const wk=new Date(today); wk.setDate(wk.getDate()+7);
+    const f=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+
     const dep=document.getElementById('departure');
     const ret=document.getElementById('return');
-    dep.value=f(tm);dep.min=f(today);
-    ret.value=f(wk);ret.min=f(tm);
+    dep.value=f(tm); dep.min=f(today);
+    ret.value=f(wk); ret.min=f(tm);
+
     dep.addEventListener('change',function(){
       if(!this.value) return;
-      const nd=new Date(this.value);nd.setDate(nd.getDate()+1);
+      const nd=new Date(this.value); nd.setDate(nd.getDate()+1);
       ret.min=f(nd);
-      if(ret.value&&ret.value<this.value) ret.value=f(nd);
+      if(ret.value && ret.value < this.value) ret.value=f(nd);
     });
   })();
 </script>
